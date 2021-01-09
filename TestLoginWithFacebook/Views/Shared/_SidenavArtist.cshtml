@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+  
+@{
+    Uri url = new Uri(String.Format("{0}://{1}{2}{3}", Context.Request.Scheme, Context.Request.Host, Context.Request.Path, Context.Request.QueryString));
+    string path = url.LocalPath.ToLower();
+    string a = path == "/artist/index" ? "active" : "";
+    string a1 = path == "/artist/artistcard" || path == "/artist/testsub" ? "active" : "";
+    string a2 = path == "/artist/orders" ? "active" : "";
+}
+ 
+
+@if (path == "/artist/artistcard" || path == "/artist/testsub" || path == "/artist/index" || path == "/artist/orders")
+{
+
+
+
+    @if (SignInManager.IsSignedIn(User) && User.HasClaim("Artist", "2"))
+    {
+
+
+
+
+        <ul class="nav nav-tabs" style="place-content: center; " id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link @a" id="home-tab"  href="/artist/index" role="tab" aria-controls="contact" aria-selected="true">Profile</a>
+            </li>
+            <li class="nav-item">
+
+                <a class="nav-link @a1 " id="profile-tab" href="/artist/artistcard" role="tab" aria-controls="contact" aria-selected="false">Setings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @a2" id="contact-tab"  href="/artist/orders" role="tab" aria-controls="contact" aria-selected="false">Orders</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">My Post</a>
+            </li>
+        </ul>
+    
+    }
+}

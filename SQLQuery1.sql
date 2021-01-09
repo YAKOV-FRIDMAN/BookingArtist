@@ -1,0 +1,1 @@
+﻿delete from AspNetUserClaims where Id = 11

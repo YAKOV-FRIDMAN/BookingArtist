@@ -1,0 +1,95 @@
+﻿@model TestLoginWithFacebook.ViewModels.SearchArtist
+@using TestLoginWithFacebook.ViewModels
+@{
+    ViewData["Title"] = "SearchArtsit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<link href="~/css/SearchStyle.css" rel="stylesheet" />
+
+@*<h1>SearchArtsit</h1>
+
+<h4>SearchArtist</h4>
+<hr />*@
+
+ 
+<div id="booking" class="section" >
+    <div class="section-center">
+        <div class="container">
+            <div class="row">
+                <div class="booking-form">
+                    <form asp-action="SearchArtsitSubmit">
+                      
+                        <div class="row"    >
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label asp-for="City" class="control-label " style="color: white"></label>
+                                    <input asp-for="City" class="form-control" />
+                                    <span asp-validation-for="City" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label asp-for="TimeEvent" class="control-label" style="color: white"></label>
+                                    <input asp-for="TimeEvent" class="form-control" />
+                                    <span asp-validation-for="TimeEvent" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label asp-for="TypeEvent" class="control-label" style="color: white"></label>
+                                    <select asp-for="TypeEvent" asp-items="Html.GetEnumSelectList<EventType>()" class="form-control">
+                                    </select>
+                                    <span asp-validation-for="TypeEvent" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label asp-for="TypeArtist" class="control-label" style="color: white"></label>
+                                    <select asp-for="TypeArtist" asp-items="Html.GetEnumSelectList<ArtistType>()" class="form-control">
+                                    </select>
+                                    <span asp-validation-for="TypeArtist" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class=" col-12 form-group">
+                                <input type="submit" value="Search" class="btn btn-primary" />
+                            </div>
+                        </div>
+                       
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+            $(document).ready(function () {
+                $("#City").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        type: "POST",
+                        url:'@Url.Action("SearchCity")',
+                        dataType: "json",
+                        data: { citySearch: request.term },
+                        success: function (data) {
+                            response($.map(data, function (citys) {
+                                return citys.city;
+                            }))
+                        }
+
+                    })
+                },
+                minLength: 1,
+                messages: {
+
+                },
+                select: function (event, ui) {
+
+                }
+            });
+        });
+</script>
+}

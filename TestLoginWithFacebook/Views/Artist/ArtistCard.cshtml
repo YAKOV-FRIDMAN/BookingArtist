@@ -1,0 +1,237 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+*@
+@model TestLoginWithFacebook.ViewModels.ArtistSetings
+@using TestLoginWithFacebook.ViewModels
+
+@{
+}
+<div class=" container" style=" box-shadow: -2px 3px 20px -1px #817f7f;">
+   
+    <form asp-action="Testsub">
+
+
+        <h4 class="text-center">Setings</h4>
+
+        <div class=" row">
+            <div class="col-9 col-sm-5 form-group">
+                <label>Cictys</label>
+                <input type="text" class="form-control" id="citySearch" name="citySearch">
+                <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+            </div>
+            <div class="col-1 text-center" style="margin: auto;  margin-left: 0px">
+
+                <button id="addCity" class="btn btn-primary form-control">+</button>
+            </div>
+            <div class="col-sm-6">
+                <div id="divCitysBut">
+
+                </div>
+                <input type="hidden" asp-for="Citys" id="arryCity" />
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm form-group">
+                <label asp-for="TypeEvent" class="control-label"></label>
+                <select asp-for="TypeEvent" asp-items="Html.GetEnumSelectList<EventType>()" class="form-control">
+                </select>
+                <span asp-validation-for="TypeEvent" class="text-danger"></span>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label asp-for="TypeArtist" class="control-label"></label>
+                    <select asp-for="TypeArtist" asp-items="Html.GetEnumSelectList<ArtistType>()" class="form-control">
+                    </select>
+                    <span asp-validation-for="TypeArtist" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+        <hr />
+        <div class="row form-group" style="margin-left: 5px;" >
+            <div class="form-group">
+                <label class="form-label">Choose your work days</label>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" asp-for="DaysWork.Sunday" class="custom-control-input" id="switch1">
+                    <label class="custom-control-label" for="switch1">Sunday</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" asp-for="DaysWork.Monday" class="custom-control-input" id="switch2">
+                    <label class="custom-control-label" for="switch2">Monday</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" asp-for="DaysWork.Tuesday" class="custom-control-input" id="switch3">
+                    <label class="custom-control-label" for="switch3">Tuesday</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" asp-for="DaysWork.Wednesday" class="custom-control-input" id="switch4">
+                    <label class="custom-control-label" for="switch4">Wednesday</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" asp-for="DaysWork.Thursday" class="custom-control-input" id="switch5">
+                    <label class="custom-control-label" for="switch5">Thursday</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" asp-for="DaysWork.Friday"  class="custom-control-input" id="switch6">
+                    <label class="custom-control-label" for="switch6">Friday</label>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="col">
+            <div class="col  form-group" style="text-align: center; padding: 5px">
+                <input type="submit" class="btn btn-success" value="Save all" />
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+
+@section Scripts
+{
+
+
+    <script>
+        let cictobj = {
+            id: 0, city: ''
+        }
+        let arryCitys = [
+
+        ];
+
+      
+
+        window.onload = function () {
+       
+                var datastring = $("#arryCity").val();
+                arryCitys = JSON.parse(datastring);
+                printBynCity();
+               // first = false;
+        };
+
+        $(document).ready(function () {
+            $("#citySearch").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        type: "POST",
+                        url:'@Url.Action("SearchCity")',
+                        dataType: "json",
+                        data: { citySearch: request.term },
+                        success: function (data) {
+                            response($.map(data, function (citys) {
+                                return citys.city;
+                            }))
+                        }
+
+                    })
+                },
+                minLength: 1,
+                messages: {
+
+                },
+                select: function (event, ui) {
+
+                }
+            });
+        });
+
+        $("#addCity").click(function (e) {
+
+            e.preventDefault();
+           
+            var singleValues = $("#citySearch").val();
+
+            $("#citySearch").val("");
+            getIdCityByNane(singleValues, function (data) {
+
+                var re = containsObject(data, arryCitys);
+                if (re === false) {
+
+                 
+
+                        arryCitys.push(data)
+                        $("#arryCity").val(JSON.stringify(arryCitys));
+                      printBynCity();
+                        //document.getElementById('divCitysBut').innerHTML = arryCitys.map(c =>
+                        //    ` <button id="${c.id}" onclick="removCity(${c.id})" >${c.city} x</button>`
+                        //).join('')
+                        console.log(arryCitys);
+                }
+
+
+
+            });
+
+           // arryCitys.push(singleValues)
+
+
+        });
+
+        function printBynCity() {
+            document.getElementById('divCitysBut').innerHTML = arryCitys.map(c =>
+                ` <button id="${c.Id}" onclick="removCity(${c.Id})" >${c.City} x</button>`
+            ).join('')
+        }
+
+        function removCity(id) {
+            var index = arryCitys.map(x => {
+                return x.Id;
+            }).indexOf(id);
+
+            arryCitys.splice(index, id);
+            $("#arryCity").val(JSON.stringify(arryCitys));
+
+            printBynCity();
+            //document.getElementById('divCitysBut').innerHTML = arryCitys.map(c =>
+            //    ` <button id="${c.id}" onclick="removCity(${c.id})" >${c.city} x</button>`
+            //).join('')
+            console.log(arryCitys);
+        }
+
+        function getIdCityByNane(cictName , callBack) {
+              $.ajax({
+                        type: "POST",
+                        url:'@Url.Action("SearchCity")',
+                        dataType: "json",
+                        data: { citySearch: cictName },
+                  success: function (data) {
+                      //console.log(data);
+                      let newdata = {
+                          Id: data[0].id,
+                          City: data[0].city
+                      }
+
+                      console.log(newdata);
+                      callBack(newdata);
+
+                        }
+
+              })
+        }
+        function containsObject(obj, list) {
+            var i;
+            for (i = 0; i < list.length; i++) {
+                if (list[i].Id === obj.Id) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+    </script>
+
+
+}
