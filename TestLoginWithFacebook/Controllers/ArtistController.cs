@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TestLoginWithFacebook.Data.ModelsData;
@@ -26,9 +27,74 @@ namespace TestLoginWithFacebook.Controllers
         }
         public IActionResult Index()
         {
-            var a =  aartistRepository.GetArtitByUserNmae(User.Identity.Name);
-            var  p = aartistRepository.GetProfileArtistByIdAtris(a.Id);
-            return View();
+            var a = aartistRepository.GetArtitByUserNmae(User.Identity.Name);
+            if (a != null)
+            {
+
+                var p = aartistRepository.GetProfileArtistByIdAtris(a.Id);
+                if (p != null)
+                {
+
+                    var pv = new ViewModels.ProfileArtist()
+                    {
+                        FullName = p.FullName,
+                        Description = p.About,
+                        Image = Convert.ToBase64String(p.ImageProfile)
+                    };
+                    return View(pv);
+                }
+                return View();
+            }
+            return RedirectToAction("ArtistCard");
+        }
+
+        public IActionResult SaveProfile(ViewModels.ProfileArtist profileArtist)
+        {
+
+            var a = aartistRepository.GetArtitByUserNmae(User.Identity.Name);
+
+
+
+            byte[] fileBytes = new byte[] { };
+            if (profileArtist.FileImg != null)
+            {
+
+                using (var ms = new MemoryStream())
+                {
+                    profileArtist.FileImg.CopyTo(ms);
+                    fileBytes = ms.ToArray();
+                    string s = Convert.ToBase64String(fileBytes);
+                    // act on the Base64 data
+                }
+            }
+
+            var p = aartistRepository.GetProfileArtistByIdAtris(a.Id);
+            if (p == null)
+            {
+
+
+                aartistRepository.AddProfileArtist(
+                    new Data.ModelsData.ProfileArtist
+                    {
+                        
+                        ImageProfile = fileBytes.Length > 1 ? fileBytes : null ,
+                       
+                        About = profileArtist.Description,
+                        IdArtit = a.Id,
+                        FullName = profileArtist.FullName
+                    });
+            }
+            else
+            {
+                if(fileBytes.Length > 1)
+                {
+                    p.ImageProfile = fileBytes;
+                }
+                p.About = profileArtist.Description;
+                p.FullName = profileArtist.FullName;
+                aartistRepository.EditProfileArtist(p);
+            }
+            return RedirectToAction("Index");
         }
 
         [Authorize]
@@ -211,6 +277,11 @@ namespace TestLoginWithFacebook.Controllers
             }
             return View("ArtistCard", artistSetings);
 
+        }
+   
+        public IActionResult MyPost()
+        {
+            return View();
         }
     }
 }

@@ -52,61 +52,61 @@ namespace TestLoginWithFacebook.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("SearchArtsit");
         }
-        [Authorize]
-        public IActionResult Privacy()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var name = User.Identity.Name;
-                var n = applicationDbContext.Users.
-                    Where(a => a.UserName == name).FirstOrDefault();
-                var c = applicationDbContext.UserClaims.Where(a => a.UserId == n.Id).FirstOrDefault();
+        //[Authorize]
+        //public IActionResult Privacy()
+        //{
+        //    if (User.Identity.IsAuthenticated)
+        //    {
+        //        var name = User.Identity.Name;
+        //        var n = applicationDbContext.Users.
+        //            Where(a => a.UserName == name).FirstOrDefault();
+        //        var c = applicationDbContext.UserClaims.Where(a => a.UserId == n.Id).FirstOrDefault();
 
-                Debug.WriteLine(c.ClaimType);
+        //        Debug.WriteLine(c.ClaimType);
 
-                //var joined = People.Join(PeopleTypes,
-                //          PeopleKey => PeopleKey.PersonType,
-                //          PeopleTypesKey => PeopleTypesKey.TypeID,
-                //          (Person, PersoneType) => new
-                //          {
-                //              Name = Person.Name,
-                //              TypeID = PersoneType.TypeID
-                //          });
+        //        //var joined = People.Join(PeopleTypes,
+        //        //          PeopleKey => PeopleKey.PersonType,
+        //        //          PeopleTypesKey => PeopleTypesKey.TypeID,
+        //        //          (Person, PersoneType) => new
+        //        //          {
+        //        //              Name = Person.Name,
+        //        //              TypeID = PersoneType.TypeID
+        //        //          });
 
-                var aa = applicationDbContext.Users.
-                    Join(applicationDbContext.UserClaims,
-                    uu => uu.Id,
-                    ur => ur.UserId, (ppp, ooo) => new
-                    {
-                        uuuuu = ppp.UserName,
-                        ooff = ooo.ClaimType
-                    }).FirstOrDefault();
+        //        var aa = applicationDbContext.Users.
+        //            Join(applicationDbContext.UserClaims,
+        //            uu => uu.Id,
+        //            ur => ur.UserId, (ppp, ooo) => new
+        //            {
+        //                uuuuu = ppp.UserName,
+        //                ooff = ooo.ClaimType
+        //            }).FirstOrDefault();
 
-                Debug.WriteLine(aa.ooff);
+        //        Debug.WriteLine(aa.ooff);
 
-                var a = from u in applicationDbContext.Users
-                        join cc in applicationDbContext.UserClaims
-                        on u.Id equals cc.UserId
-                        where u.UserName == name
-                        select cc;
-                var eee = Enums.Roles.Admin;
-                if (eee.ToString() == aa.ooff)
-                {
-                    Debug.WriteLine("----------------------");
-                    Debug.WriteLine(eee);
-                    Debug.WriteLine("-----------------------");
-                }
+        //        var a = from u in applicationDbContext.Users
+        //                join cc in applicationDbContext.UserClaims
+        //                on u.Id equals cc.UserId
+        //                where u.UserName == name
+        //                select cc;
+        //        var eee = Enums.Roles.Admin;
+        //        if (eee.ToString() == aa.ooff)
+        //        {
+        //            Debug.WriteLine("----------------------");
+        //            Debug.WriteLine(eee);
+        //            Debug.WriteLine("-----------------------");
+        //        }
 
-                Debug.WriteLine(a.FirstOrDefault().ClaimType);
+        //        Debug.WriteLine(a.FirstOrDefault().ClaimType);
 
-                ViewData["name"] = n;
-                return View();
+        //        ViewData["name"] = n;
+        //        return View();
 
-            }
-            return RedirectToAction("Index");
-        }
+        //    }
+        //    return RedirectToAction("Index");
+        //}
 
 
         public IActionResult SearchArtsit()
@@ -118,65 +118,76 @@ namespace TestLoginWithFacebook.Controllers
         {
 
             var result = aartistRepository.SearchArtsit(searchArtist.City, searchArtist.TimeEvent, (Enums.EventType)searchArtist.TypeEvent, (Enums.ArtistType)searchArtist.TypeArtist);
+            var cardsArtits = aartistRepository.GetCardsArtistByListId(result);
+            //var idcity = applicationDbContext.Citys.Where(c => c.City == searchArtist.City).Select(c => c.Id).FirstOrDefault();
 
-            var idcity = applicationDbContext.Citys.Where(c => c.City == searchArtist.City).Select(c => c.Id).FirstOrDefault();
+            //var idaritts = applicationDbContext.CictyWorks.Where(c => c.IdCity == idcity).Select(i => i.IdArtis).ToList();
 
-            var idaritts = applicationDbContext.CictyWorks.Where(c => c.IdCity == idcity).Select(i => i.IdArtis).ToList();
-
-            var dys = searchArtist.TimeEvent.DayOfWeek.ToString();
+            //var dys = searchArtist.TimeEvent.DayOfWeek.ToString();
 
 
-            var lllllll = applicationDbContext.DaysWorks.FromSqlRaw($"select * from DaysWorks where {dys} = 1").Select(a => a.IdArtit).ToList();
+            //var lllllll = applicationDbContext.DaysWorks.FromSqlRaw($"select * from DaysWorks where {dys} = 1").Select(a => a.IdArtit).ToList();
 
-            //var ats =   applicationDbContext.Artists.Where(i => idaritts.Any(b => b == i.Id) && lllllll.Any(b =>b == i.Id)).
+            ////var ats =   applicationDbContext.Artists.Where(i => idaritts.Any(b => b == i.Id) && lllllll.Any(b =>b == i.Id)).
+            ////    Where(a => (ArtistType)a.ArtistType == searchArtist.TypeArtist &&
+            //// (EventType)a.EventType == searchArtist.TypeEvent).ToList();
+
+            //var sest = applicationDbContext.Artists.Where(i => idaritts.Any(b => b == i.Id) && lllllll.Any(b => b == i.Id)).
             //    Where(a => (ArtistType)a.ArtistType == searchArtist.TypeArtist &&
-            // (EventType)a.EventType == searchArtist.TypeEvent).ToList();
+            // (EventType)a.EventType == searchArtist.TypeEvent).
+            // Join(applicationDbContext.Users,
+            // ar => ar.IdUser,
+            // us => us.Id, (art, use) => new
+            // {
+            //     Id = art.Id,
+            //     Fulname = use.UserName,
+            //    /// Image = art.ImageProfile,
+            //     Price = art.Price,
 
-            var sest = applicationDbContext.Artists.Where(i => idaritts.Any(b => b == i.Id) && lllllll.Any(b => b == i.Id)).
-                Where(a => (ArtistType)a.ArtistType == searchArtist.TypeArtist &&
-             (EventType)a.EventType == searchArtist.TypeEvent).
-             Join(applicationDbContext.Users,
-             ar => ar.IdUser,
-             us => us.Id, (art, use) => new
-             {
-                 Id = art.Id,
-                 Fulname = use.UserName,
-                /// Image = art.ImageProfile,
-                 Price = art.Price,
-
-             }).ToList();
+            // }).ToList();
 
 
-            //var sest1 = applicationDbContext.Artists.Join(applicationDbContext.Users,
+            ////var sest1 = applicationDbContext.Artists.Join(applicationDbContext.Users,
 
-            //    ar => ar.IdUser, 
-            //    us => us.Id,
+            ////    ar => ar.IdUser, 
+            ////    us => us.Id,
 
-            //    (a, u) => new
-            //    {
-            //         id= a.Id
-            //    }).Join(applicationDbContext.DaysWorks,
-            //      a =>a.id,
-            //      x=>x.IdArtit,
+            ////    (a, u) => new
+            ////    {
+            ////         id= a.Id
+            ////    }).Join(applicationDbContext.DaysWorks,
+            ////      a =>a.id,
+            ////      x=>x.IdArtit,
 
-            //      (aaa,bbb)  => new{
+            ////      (aaa,bbb)  => new{
 
-            //      }
-            //    );
+            ////      }
+            ////    );
 
 
 
-            List<Artis> a = (sest.Select(item => new Artis
+            //List<Artis> a = (sest.Select(item => new Artis
+            //{
+            //    FullName = item.Fulname,
+            //    Id = item.Id,
+            //    // IimagePath = String.Format("data:image/gif;base64,{0}", Convert.ToBase64String(item.Image)),
+            //    Price = item.Price,
+
+            //})).ToList();
+
+            List<Artis> a1 = (cardsArtits.Select(item => new Artis
             {
-                FullName = item.Fulname,
                 Id = item.Id,
-                // IimagePath = String.Format("data:image/gif;base64,{0}", Convert.ToBase64String(item.Image)),
+                FullName = item.FullName,
+                Description = item.Description,
                 Price = item.Price,
+                IimagePath = Convert.ToBase64String(item.Image)
 
             })).ToList();
 
 
-            return View("ResultArtist", a);
+
+            return View("ResultArtist", a1);
         }
       
        

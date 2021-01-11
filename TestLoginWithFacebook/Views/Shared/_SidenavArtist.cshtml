@@ -8,10 +8,11 @@
     string a = path == "/artist/index" ? "active" : "";
     string a1 = path == "/artist/artistcard" || path == "/artist/testsub" ? "active" : "";
     string a2 = path == "/artist/orders" ? "active" : "";
+    string a3 = path == "/artist/mypost" ? "active" : "";
 }
  
 
-@if (path == "/artist/artistcard" || path == "/artist/testsub" || path == "/artist/index" || path == "/artist/orders")
+@if (path == "/artist/artistcard" || path == "/artist/testsub" || path == "/artist/index" || path == "/artist/orders" || path == "/artist/mypost")
 {
 
 
@@ -34,7 +35,7 @@
                 <a class="nav-link @a2" id="contact-tab"  href="/artist/orders" role="tab" aria-controls="contact" aria-selected="false">Orders</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">My Post</a>
+                <a class="nav-link @a3" id="contact-tab"  href="/artist/mypost" role="tab" aria-controls="contact" aria-selected="false">My Post</a>
             </li>
         </ul>
     

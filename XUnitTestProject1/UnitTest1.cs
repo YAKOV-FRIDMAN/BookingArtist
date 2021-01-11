@@ -15,7 +15,7 @@ namespace XUnitTestProject1
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection
-                .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=aspnet-TestLoginWithFacebook-88E81BB5-D88D-405A-9436-180E114BC4E8;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"),
+                .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(@"Server=tcp:serverdb65.database.windows.net,1433;Initial Catalog=MyDbLearn;Persist Security Info=False;User ID=yakov;Password=Kobi656565;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"),
                     ServiceLifetime.Transient);
 
             ServiceProvider = serviceCollection.BuildServiceProvider();
@@ -86,7 +86,7 @@ namespace XUnitTestProject1
                      DateTime.Now,
                      TestLoginWithFacebook.Data.ModelsData.Enums.EventType.AbBigEvent,
                      TestLoginWithFacebook.Data.ModelsData.Enums.ArtistType.Singer);
-
+                var result1 =  aartistRepository.GetCardsArtistByListId(result);
             }
         }
         [Fact]

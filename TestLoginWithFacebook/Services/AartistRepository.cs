@@ -208,7 +208,7 @@ namespace TestLoginWithFacebook.Services
             });
 
             applicationDbContext.SaveChanges();
-           
+
         }
 
         public void Add(ProfileArtist profileArtist)
@@ -232,14 +232,75 @@ namespace TestLoginWithFacebook.Services
 
         public void EditProfileArtist(ProfileArtist profileArtist)
         {
-           var p = applicationDbContext.ProfileArtists.Where(a => a.Id == profileArtist.Id).FirstOrDefault();
-           p = profileArtist;
+            var p = applicationDbContext.ProfileArtists.Where(a => a.IdArtit == profileArtist.IdArtit).FirstOrDefault();
+            p = profileArtist;
             applicationDbContext.SaveChanges();
         }
 
         public int GetIdArtistByUserNmae(string UserName)
         {
+          
             throw new NotImplementedException();
+        }
+
+        public void AddProfileArtist(ProfileArtist profileArtist)
+        {
+            applicationDbContext.ProfileArtists.Add(profileArtist);
+            applicationDbContext.SaveChanges();
+
+        }
+
+        public List<ArtistCard> GetCardsArtistByListId(List<int> ids)
+        {
+           List<ArtistCard> cardsArtist =  applicationDbContext.Artists.Where(a => ids.Any(i=>i == a.Id)).Join(applicationDbContext.ProfileArtists,
+                a => a.Id,
+                p => p.IdArtit,
+                (aa, pp) => new ArtistCard
+                {
+                    Id = aa.Id,
+                    Price = aa.Price,
+                    Image = pp.ImageProfile,
+                    FullName = pp.FullName,
+                    Description = pp.About,
+
+                }
+                ).ToList();
+            return cardsArtist;
+        }
+
+        public void AddPost(Post post)
+        {
+            applicationDbContext.Posts.Add(post);
+            applicationDbContext.SaveChanges();
+        }
+
+        public void EditPost(Post post)
+        {
+            var p = applicationDbContext.Posts.Where(p => p.Id == post.Id).FirstOrDefault();
+            p = post;
+            applicationDbContext.SaveChanges();
+        }
+
+        public void DeletePost(int id)
+        {
+            var p = GetPostById(id);
+            applicationDbContext.Posts.Remove(p);
+        }
+
+        public Post GetPostById(int id)
+        {
+            return applicationDbContext.Posts.Where(p => p.Id == id).FirstOrDefault();
+        }
+
+        public List<Post> GetPostByIdArtist(int idArtist)
+        {
+            return applicationDbContext.Posts.Where(p => p.idArtist == idArtist).ToList();
+        }
+
+        public List<Post> GetAllPost()
+        {
+            return applicationDbContext.Posts.ToList();
+
         }
     }
 }

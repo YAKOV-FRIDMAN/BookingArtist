@@ -1,45 +1,76 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
+
+@model TestLoginWithFacebook.ViewModels.ProfileArtist
+
 @{
+    string imgSrc = "https://www.americanaircraftsales.com/wp-content/uploads/2016/09/no-profile-img-294x300.jpg";
+    if (Model != null)
+    {
+
+        if (Model.Image != "")
+        {
+            imgSrc = String.Format("data:image/gif;base64,{0}", Model.Image);
+        }
+    }
+
+
 }
 
-@model TestLoginWithFacebook.ViewModels.Artis
 
 
+<form asp-action="SaveProfile"  method="post" enctype="multipart/form-data">
+    <div class="row" style="box-shadow: -2px 3px 20px -1px #817f7f;">
 
 
-<div class="row"  style="box-shadow: -2px 3px 20px -1px #817f7f;">
+        <div class="col-sm-4">
 
-    <div class="col-sm-4">
-
-        @*<img src="https://thebodyisnotanapology.com/wp-content/uploads/2018/02/pexels-photo-459947.jpg" class="rounded mx-auto d-block" alt="Responsive image">*@
-        <div class="bg-image hover-overlay ripple" style="margin:5px;   box-shadow: -2px 3px 20px -1px #817f7f96;">
-            <img src="https://thebodyisnotanapology.com/wp-content/uploads/2018/02/pexels-photo-459947.jpg" class="img-fluid" />
-            <a href="#!">
-                <div class="mask" style="background-color: rgba(57, 192, 237, 0.2)"></div>
-            </a>
+            @*<img src="https://thebodyisnotanapology.com/wp-content/uploads/2018/02/pexels-photo-459947.jpg" class="rounded mx-auto d-block" alt="Responsive image">*@
+            <div class="bg-image hover-overlay ripple" style="margin:5px;   box-shadow: -2px 3px 20px -1px #817f7f96;">
+                <img src="@imgSrc" id="frame" class="img-fluid" />
+                <a href="#!">
+                    <div class="mask" style="background-color: rgba(57, 192, 237, 0.2)"></div>
+                </a>
+            </div>
         </div>
-    </div>
-    <div class="col-sm-8">
-        <div class=" col-12 form-group">
-            <label asp-for="FullName" class="control-label"></label>
-            <input asp-for="FullName" class="form-control" />
-            <span asp-validation-for="FullName" class="text-danger"></span>
+        <div class="col-sm-8">
+            <div class=" col-12 form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="col-12 form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
         </div>
-        <div class="col-12 form-group">
-            <label asp-for="Description" class="control-label"></label>
-            <textarea asp-for="Description" class="form-control"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
-    </div>
 
 
-     
+
         <div class="col-sm-4 form-group">
-             
-            <input type="file" class="form-control" id="customFile" />
+
+            <label asp-for="FileImg" class="control-label"></label>
+            <input type="file" name="FileImg" id="FileImg" class="form-control" onchange="preview()" />
+            <span asp-validation-for="FileImg" class="text-danger"></span>
         </div>
-        
-    
-</div>
+
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+
+    </div>
+</form>
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        function preview() {
+            frame.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+}

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestLoginWithFacebook.Data;
 
 namespace TestLoginWithFacebook.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210110170737_addFullNameToProfile")]
+    partial class addFullNameToProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -370,35 +372,6 @@ namespace TestLoginWithFacebook.Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("TestLoginWithFacebook.Data.ModelsData.Post", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ArtistId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("idArtist")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArtistId");
-
-                    b.ToTable("Posts");
-                });
-
             modelBuilder.Entity("TestLoginWithFacebook.Data.ModelsData.ProfileArtist", b =>
                 {
                     b.Property<int>("Id")
@@ -511,13 +484,6 @@ namespace TestLoginWithFacebook.Data.Migrations
                     b.HasOne("TestLoginWithFacebook.Data.ModelsData.Artist", "Artist")
                         .WithMany("Orders")
                         .HasForeignKey("FkIdArtis");
-                });
-
-            modelBuilder.Entity("TestLoginWithFacebook.Data.ModelsData.Post", b =>
-                {
-                    b.HasOne("TestLoginWithFacebook.Data.ModelsData.Artist", "Artist")
-                        .WithMany("Posts")
-                        .HasForeignKey("ArtistId");
                 });
 
             modelBuilder.Entity("TestLoginWithFacebook.Data.ModelsData.ProfileArtist", b =>

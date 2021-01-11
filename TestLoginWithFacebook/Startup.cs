@@ -37,11 +37,11 @@ namespace TestLoginWithFacebook
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddAuthentication().AddFacebook(facebookOptions =>
-            {
-                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            });
+            //services.AddAuthentication().AddFacebook(facebookOptions =>
+            //{
+            //    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+            //    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //});
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IAartistRepository, AartistRepository>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
@@ -74,7 +74,7 @@ namespace TestLoginWithFacebook
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=SearchArtsit}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

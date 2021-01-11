@@ -24,6 +24,8 @@ namespace TestLoginWithFacebook.Data.ModelsData
 
         public IdentityUser IdentityUser { get; set; }
         public ICollection<Orders> Orders { get; set; }
+        public ICollection<Post> Posts { get; set; }
+
        
 
     }

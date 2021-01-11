@@ -1,0 +1,118 @@
+﻿.pUpPost {
+    margin: 0;
+    margin-top: 5px;
+}
+
+.pButtomImg {
+    text-align: left;
+    margin-left: 10px;
+}
+
+.post-bar {
+    max-width: 600px;
+}
+
+.rudus {
+    margin: 5px;
+    width: 60px;
+    border-radius: 100px;
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 100px;
+}
+.mycenter {
+    margin: auto;
+    width: 60%;
+   
+    
+}
+.buPost {
+    background-color: rgba(214, 214, 213, 0);
+    border: none;
+}
+
+    .buPost:hover {
+        background-color: rgba(214, 214, 213, 0.521);
+        border: none;
+    }
+
+.ed-options.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 999;
+}
+
+.ed-options {
+    position: absolute;
+    /* top: 100%; */
+    right: 0;
+    width: 130px;
+    background-color: #fff;
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.28);
+    -moz-box-shadow: 0 0 10px rgba(0,0,0,0.28);
+    -ms-box-shadow: 0 0 10px rgba(0,0,0,0.28);
+    -o-box-shadow: 0 0 10px rgba(0,0,0,0.28);
+    box-shadow: 0 0 10px rgba(0,0,0,0.28);
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 0;
+}
+
+li {
+    text-align: -webkit-match-parent;
+    color: #686868;
+    font-size: 14px;
+    font-weight: 600;
+    list-style-type: none;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+h5 {
+    margin-bottom: 0;
+    margin-right: 5px;
+}
+
+.colorpost {
+    /* background-color: rgba(136, 136, 136, 0.897); */
+    color: rgba(136, 136, 136, 0.952);
+}
+
+.imgButPost {
+    opacity: 0.5;
+}
+
+.craetePost {
+    border-radius: 71px;
+    -moz-border-radius: 71px;
+    -webkit-border-radius: 71px;
+    width: 95%;
+    border-color: rgba(255, 222, 173, 0);
+    text-align: left;
+}
+
+.creatStore {
+    width: 100%;
+    background-color: rgba(255, 222, 173, 0.027);
+    text-align: left;
+    border: none;
+}
+
+    .creatStore:hover {
+        background-color: rgba(214, 214, 213, 0.521);
+        border: none;
+    }
+/* .creatStore:active{
+    background-color: rgba(214, 214, 213, 0.521);
+    border: none;
+  } */
+button:focus {
+    outline: 0;
+}
+
+@media only screen and (max-width: 740px) {
+    .mycenter {
+        margin: auto;
+        width: 100%;
+    }
+}

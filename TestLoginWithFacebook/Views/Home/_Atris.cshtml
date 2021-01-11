@@ -1,12 +1,13 @@
 ﻿@model IEnumerable<TestLoginWithFacebook.ViewModels.Artis>
 
+ 
 <p>
-    <a asp-action="Create">Create New</a>
+    Result @Model.Count() Artist 
 </p>
-<table class="table">
+@*<table class="table">
     <thead>
         <tr>
-            
+
             <th>
                 @Html.DisplayNameFor(model => model.FullName)
             </th>
@@ -25,30 +26,57 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
+    <tbody>*@
+<div>
+
+
+    @foreach (var item in Model)
+    {
+        @*<tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IimagePath)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rated)
+                </td>
+                <td>
+                    @Html.ActionLink("View", "View", new { id = item.Id })
+
+                </td>
+            </tr>*@
+
+    <div class="row" style="width: 100%;  box-shadow: -2px 3px 20px -1px #817f7f; margin: 10px">
+        <div class="col-sm-4">
+
+            <img class="card-img-top" style="height:250px; margin:10px" src="@String.Format("data:image/gif;base64,{0}", item.IimagePath)" alt="Card image cap">
+        </div>
+        <div class="col-sm-7" style="text-align: right; padding:5px;">
+
+           
+            <h5 class="card-title">@item.FullName</h5>
+         
+
+            <p class="card-text">@item.Description</p>
+        
+            <h5>@item.Price</h5>
+            @*<a href="#" class="btn btn-primary">Go somewhere</a>*@
+            @Html.ActionLink("View", "View", new { id = item.Id })
             
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IimagePath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rated)
-            </td>
-            <td>
-                @Html.ActionLink("View", "View", new {  id=item.Id  }) 
-              
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+</div>
+    </div>
+    }
+
+</div>
+@*</tbody>
+    </table>*@

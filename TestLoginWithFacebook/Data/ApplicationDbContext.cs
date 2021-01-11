@@ -31,6 +31,7 @@ namespace TestLoginWithFacebook.Data
         public DbSet<DaysWork>   DaysWorks { get; set; }
         public DbSet<Orders> Orders { get; set; }
         public DbSet<ProfileArtist> ProfileArtists { get; set; }
+        public DbSet<Post> Posts { get; set; }
      
     }
 

@@ -20,6 +20,8 @@ namespace TestLoginWithFacebook.Services
         public void AddCictyWorks(List<Citys> citys, int IdArtis);
         public void Add(ProfileArtist profileArtist);
         public void AddUserClaims(string claimType, string claimValue, string idUser);
+        public void AddProfileArtist(ProfileArtist profileArtist);
+        public void AddPost(Post post);
 
         //////////////////--Edit---//////////////////////
         public void EditCictyWorks(List<Citys> citys, int IdArtis);
@@ -27,10 +29,12 @@ namespace TestLoginWithFacebook.Services
         public void EditDaysWork(DaysWork daysWork);
         public int EditArtist(Artist artist);
         public void EditProfileArtist(ProfileArtist profileArtist);
+        public void EditPost(Post post);
         ///////////////////--delete--////////////////////
         public void DeleteCityWork(int id);
         public void DeleteAllCityWorkByIdArtist(int id);
         public void DeleteProfileArtist(ProfileArtist profileArtist);
+        public void DeletePost(int id);
         /////////////////---Get---/////////////////
         public string GetIdUserByUsurName(string UserName);
         public int GetIdArtistByIdUser(string idUser);
@@ -42,8 +46,12 @@ namespace TestLoginWithFacebook.Services
         public List<CictyWorks> GetCictyWorksByArtist(int id);
         public List<Citys> GetCitysByIds(List<int> ids);
         public List<int> SearchArtsit(string city, DateTime TimeEvent, EventType eventType, ArtistType artistType);
+        public List<ArtistCard> GetCardsArtistByListId(List<int> ids);
         public List<object> GetArtsitCardsByIdis(List<int> idArtsits);
         public bool IfArtisCreated(string idUser);
         public ProfileArtist GetProfileArtistByIdAtris(int idAtris);
+        public Post GetPostById(int id);
+        public List<Post> GetPostByIdArtist(int idArtist);
+        public List<Post> GetAllPost();
     }
 }
