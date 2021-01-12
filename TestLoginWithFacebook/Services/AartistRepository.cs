@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TestLoginWithFacebook.Data;
-using TestLoginWithFacebook.Data.ModelsData;
-using static TestLoginWithFacebook.Data.ModelsData.Enums;
+using BookingArtistMvcCore.Data;
+using BookingArtistMvcCore.Data.ModelsData;
+using static BookingArtistMvcCore.Data.ModelsData.Enums;
 
-namespace TestLoginWithFacebook.Services
+namespace BookingArtistMvcCore.Services
 {
     public class AartistRepository : IAartistRepository
     {

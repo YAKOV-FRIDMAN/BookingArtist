@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using TestLoginWithFacebook.Data.ModelsData;
+using BookingArtistMvcCore.Data.ModelsData;
 
-namespace TestLoginWithFacebook.ViewModels
+namespace BookingArtistMvcCore.ViewModels
 {
     public class ArtistSetings
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace TestLoginWithFacebook.Models
+namespace BookingArtistMvcCore.Models
 {
     public class ErrorViewModel
     {

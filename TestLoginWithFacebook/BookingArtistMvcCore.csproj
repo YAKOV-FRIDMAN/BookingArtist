@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-TestLoginWithFacebook-88E81BB5-D88D-405A-9436-180E114BC4E8</UserSecretsId>
+    <AssemblyName>BookingArtistMvcCore</AssemblyName>
+    <RootNamespace>BookingArtistMvcCore</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

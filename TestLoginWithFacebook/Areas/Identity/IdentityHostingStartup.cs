@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TestLoginWithFacebook.Data;
+using BookingArtistMvcCore.Data;
 
-[assembly: HostingStartup(typeof(TestLoginWithFacebook.Areas.Identity.IdentityHostingStartup))]
-namespace TestLoginWithFacebook.Areas.Identity
+[assembly: HostingStartup(typeof(BookingArtistMvcCore.Areas.Identity.IdentityHostingStartup))]
+namespace BookingArtistMvcCore.Areas.Identity
 {
     public class IdentityHostingStartup : IHostingStartup
     {

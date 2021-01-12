@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azure.Identity;
 
-namespace TestLoginWithFacebook
+namespace BookingArtistMvcCore
 {
     public class Program
     {

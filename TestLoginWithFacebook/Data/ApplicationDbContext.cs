@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using TestLoginWithFacebook.Data.ModelsData;
+using BookingArtistMvcCore.Data.ModelsData;
 
-namespace TestLoginWithFacebook.Data
+namespace BookingArtistMvcCore.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

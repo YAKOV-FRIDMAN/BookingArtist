@@ -8,11 +8,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using TestLoginWithFacebook.Data.ModelsData;
-using TestLoginWithFacebook.Services;
-using TestLoginWithFacebook.ViewModels;
+using BookingArtistMvcCore.Data.ModelsData;
+using BookingArtistMvcCore.Services;
+using BookingArtistMvcCore.ViewModels;
 
-namespace TestLoginWithFacebook.Controllers
+namespace BookingArtistMvcCore.Controllers
 {
     public class ArtistController : Controller
     {

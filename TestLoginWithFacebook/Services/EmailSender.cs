@@ -4,13 +4,15 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Threading.Tasks;
 
-namespace TestLoginWithFacebook.Services
+namespace BookingArtistMvcCore.Services
 {
     public class EmailSender : IEmailSender
     {
         public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
         {
-            Options = optionsAccessor.Value;
+             Options = optionsAccessor.Value;
+            //Options.SendGridKey = "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";
+            //Options.SendGridUser = "RickAndMSFT";
         }
 
         public AuthMessageSenderOptions Options { get; } //set only via Secret Manager

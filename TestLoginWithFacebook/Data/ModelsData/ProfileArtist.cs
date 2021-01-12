@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestLoginWithFacebook.Data.ModelsData
+namespace BookingArtistMvcCore.Data.ModelsData
 {
     public class ProfileArtist
     {

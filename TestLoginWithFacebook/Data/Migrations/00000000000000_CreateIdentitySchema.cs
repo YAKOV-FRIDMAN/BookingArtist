@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
-using TestLoginWithFacebook.Data.ModelsData;
+using BookingArtistMvcCore.Data.ModelsData;
 
-namespace TestLoginWithFacebook.Data.Migrations
+namespace BookingArtistMvcCore.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

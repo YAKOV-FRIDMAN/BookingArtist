@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TestLoginWithFacebook\TestLoginWithFacebook.csproj" />
+    <ProjectReference Include="..\TestLoginWithFacebook\BookingArtistMvcCore.csproj" />
   </ItemGroup>
 
 </Project>

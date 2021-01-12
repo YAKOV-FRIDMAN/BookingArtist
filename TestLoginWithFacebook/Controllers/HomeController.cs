@@ -15,13 +15,13 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using TestLoginWithFacebook.Data;
-using TestLoginWithFacebook.Data.ModelsData;
-using TestLoginWithFacebook.Models;
-using TestLoginWithFacebook.Services;
-using TestLoginWithFacebook.ViewModels;
+using BookingArtistMvcCore.Data;
+using BookingArtistMvcCore.Data.ModelsData;
+using BookingArtistMvcCore.Models;
+using BookingArtistMvcCore.Services;
+using BookingArtistMvcCore.ViewModels;
 
-namespace TestLoginWithFacebook.Controllers
+namespace BookingArtistMvcCore.Controllers
 {
     public class HomeController : Controller
     {

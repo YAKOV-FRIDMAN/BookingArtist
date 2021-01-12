@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestLoginWithFacebook.Data.ModelsData
+namespace BookingArtistMvcCore.Data.ModelsData
 {
     public class Citys
     {

@@ -13,10 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TestLoginWithFacebook.Data;
-using TestLoginWithFacebook.Services;
+using BookingArtistMvcCore.Data;
+using BookingArtistMvcCore.Services;
 
-namespace TestLoginWithFacebook
+namespace BookingArtistMvcCore
 {
     public class Startup
     {
@@ -57,9 +57,11 @@ namespace TestLoginWithFacebook
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+                //app.UseExceptionHandler("/Home/Error");
+                //// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                //app.UseHsts();
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();

@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Diagnostics;
-using TestLoginWithFacebook;
-using TestLoginWithFacebook.Data;
-using TestLoginWithFacebook.Services;
+using BookingArtistMvcCore;
+using BookingArtistMvcCore.Data;
+using BookingArtistMvcCore.Services;
 using Xunit;
 
 namespace XUnitTestProject1
@@ -60,10 +60,10 @@ namespace XUnitTestProject1
             {
 
                 AartistRepository aartistRepository = new AartistRepository(context);
-                var result = aartistRepository.AddArtist(new TestLoginWithFacebook.Data.ModelsData.Artist
+                var result = aartistRepository.AddArtist(new BookingArtistMvcCore.Data.ModelsData.Artist
                 {
-                    ArtistType = TestLoginWithFacebook.Data.ModelsData.Enums.ArtistType.DJ,
-                    EventType = TestLoginWithFacebook.Data.ModelsData.Enums.EventType.AbBigEvent,
+                    ArtistType = BookingArtistMvcCore.Data.ModelsData.Enums.ArtistType.DJ,
+                    EventType = BookingArtistMvcCore.Data.ModelsData.Enums.EventType.AbBigEvent,
                     IdUser = "daba07b1-989b-4252-a5e2-a78f14621c43",
                     Price = 2850,
 
@@ -84,8 +84,8 @@ namespace XUnitTestProject1
 
                 var result = aartistRepository.SearchArtsit("tel aviv",
                      DateTime.Now,
-                     TestLoginWithFacebook.Data.ModelsData.Enums.EventType.AbBigEvent,
-                     TestLoginWithFacebook.Data.ModelsData.Enums.ArtistType.Singer);
+                     BookingArtistMvcCore.Data.ModelsData.Enums.EventType.AbBigEvent,
+                     BookingArtistMvcCore.Data.ModelsData.Enums.ArtistType.Singer);
                 var result1 =  aartistRepository.GetCardsArtistByListId(result);
             }
         }
@@ -115,7 +115,7 @@ namespace XUnitTestProject1
                 a.Friday = true;
                 aartistRepository.EditDaysWork(a);
                 var a1 = aartistRepository.GetByIdArtist(5);
-                Assert.Equal<TestLoginWithFacebook.Data.ModelsData.DaysWork>(a, a1);
+                Assert.Equal<BookingArtistMvcCore.Data.ModelsData.DaysWork>(a, a1);
 
             }
         }

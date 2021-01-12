@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TestLoginWithFacebook.Data.Migrations
+namespace BookingArtistMvcCore.Data.Migrations
 {
     public partial class orderTableAndFixRow : Migration
     {

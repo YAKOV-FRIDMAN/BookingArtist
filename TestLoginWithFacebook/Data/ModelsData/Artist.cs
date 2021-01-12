@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using static TestLoginWithFacebook.Data.ModelsData.Enums;
+using static BookingArtistMvcCore.Data.ModelsData.Enums;
 
-namespace TestLoginWithFacebook.Data.ModelsData
+namespace BookingArtistMvcCore.Data.ModelsData
 {
     public class Artist
     {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TestLoginWithFacebook.Data.ModelsData;
-using static TestLoginWithFacebook.Data.ModelsData.Enums;
+using BookingArtistMvcCore.Data.ModelsData;
+using static BookingArtistMvcCore.Data.ModelsData.Enums;
 
-namespace TestLoginWithFacebook.Services
+namespace BookingArtistMvcCore.Services
 {
     public interface IAartistRepository
     {
