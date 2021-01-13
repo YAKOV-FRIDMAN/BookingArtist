@@ -1,4 +1,4 @@
-﻿@*@model TestLoginWithFacebook.ViewModels.Post*@
+﻿@model BookingArtistMvcCore.ViewModels.Post
 
 
 <link href="~/css/PostStyle.css" rel="stylesheet" />
@@ -36,11 +36,11 @@
     </div>
 
     <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        <h5 class="card-title">@Model.Title</h5>
+        <p class="card-text">@Model.Description</p>
         <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
     </div>
-    <img src="https://scontent.ftlv1-1.fna.fbcdn.net/v/t1.0-9/76702359_121032379343768_7465264179675398144_o.jpg?_nc_cat=106&ccb=2&_nc_sid=e3f864&_nc_ohc=zlVH7CzUuN0AX8zLEU_&_nc_ht=scontent.ftlv1-1.fna&oh=b6f57aaae88443f6745168657d2a6bc0&oe=6020B58B" class="card-img-top" alt="...">
+    <img src="@String.Format("data:image/gif;base64,{0}", Model.Image)" class="card-img-top" alt="...">
     <div class="row text-center">
         <div class="col-6">
             <p style="text-align: left; margin-left: 10px;">4502 views</p>

@@ -154,6 +154,7 @@ namespace BookingArtistMvcCore.Controllers
             return Json(citys);
         }
 
+        [Authorize]
         public IActionResult Orders()
         {
             List<Orders> orders = new List<Orders>
@@ -210,6 +211,7 @@ namespace BookingArtistMvcCore.Controllers
             return View(orders);
         }
 
+        [Authorize]
         public IActionResult Testsub(ArtistSetings artistSetings)
         {
 
@@ -278,10 +280,59 @@ namespace BookingArtistMvcCore.Controllers
             return View("ArtistCard", artistSetings);
 
         }
-   
+
+
+        [Authorize]
+        public IActionResult CreatePost()
+        {
+            return PartialView("_CreatePost");    
+        }
+        [Authorize]
+        public IActionResult CreateNewPost(PostNew postNew)
+        {
+            var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
+
+           var id=   aartistRepository.GetIdArtistByIdUser(idUser);
+
+            byte[] fileBytes = new byte[] { };
+          
+
+                using (var ms = new MemoryStream())
+                {
+                   postNew.ImageFile.CopyTo(ms);
+                    fileBytes = ms.ToArray();
+                   
+                    // act on the Base64 data
+                }
+            
+            aartistRepository.AddPost(new Data.ModelsData.Post
+            {
+
+                idArtist = id,
+                Description = postNew.Description,
+                 Title = postNew.Title,
+                 Image = fileBytes,
+                 
+
+            });
+            return RedirectToAction("MyPost");
+        }
+        [Authorize]
         public IActionResult MyPost()
         {
-            return View();
+            var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
+
+            var id = aartistRepository.GetIdArtistByIdUser(idUser);
+            var post =  aartistRepository.GetPostByIdArtist(id);
+            List<ViewModels.Post> posts = post.Select(item => new ViewModels.Post
+            {
+                Description = item.Description,
+                Id = item.Id,
+                Title = item.Title,
+                Image = Convert.ToBase64String(item.Image)
+
+            }).ToList();
+            return View(posts);
         }
     }
 }
