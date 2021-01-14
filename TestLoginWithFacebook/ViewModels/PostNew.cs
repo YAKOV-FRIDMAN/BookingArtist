@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BookingArtistMvcCore.ViewModels.Validations;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +14,10 @@ namespace BookingArtistMvcCore.ViewModels
         public string Title { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
+
+        [Required(AllowEmptyStrings = false,ErrorMessage = "Please select a file." )]
+        [DataType(DataType.Upload)]
+        [AllowedExtensions(new string[] { ".jpg", ".png" })]
         public virtual IFormFile ImageFile { get; set; }
 
     }

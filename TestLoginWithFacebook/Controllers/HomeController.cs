@@ -31,7 +31,7 @@ namespace BookingArtistMvcCore.Controllers
         IAartistRepository aartistRepository;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext applicationDbContext, IEmailSender emailSender, IAartistRepository aartistRepository , SignInManager<IdentityUser> signInManager)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext applicationDbContext, IEmailSender emailSender, IAartistRepository aartistRepository, SignInManager<IdentityUser> signInManager)
         {
             _logger = logger;
             this.applicationDbContext = applicationDbContext;
@@ -185,14 +185,19 @@ namespace BookingArtistMvcCore.Controllers
 
             })).ToList();
 
-
+            ViewData["DateSerach"] = searchArtist.TimeEvent;
 
             return View("ResultArtist", a1);
         }
-      
-       
 
-   
+        public IActionResult ViewArtist(int id, DateTime TiemSerch)
+        {
+
+
+            return View();
+        }
+
+
         [HttpPost]
         public JsonResult SearchCity(string citySearch)
         {
@@ -231,9 +236,9 @@ namespace BookingArtistMvcCore.Controllers
 
                 var artist = aartistRepository.GetArtitByIdUser(idUser);
 
-               
+
                 artist.ArtistType = (Enums.ArtistType)artistSetings.TypeArtist;
-                
+
                 artist.EventType = (Enums.EventType)artistSetings.TypeEvent;
                 artist.Price = artistSetings.Price;
 
@@ -255,15 +260,15 @@ namespace BookingArtistMvcCore.Controllers
 
                 aartistRepository.EditDaysWork(dayWork);
 
-       
+
                 var citys = JsonConvert.DeserializeObject<List<Citys>>(artistSetings.Citys);
 
                 aartistRepository.DeleteAllCityWorkByIdArtist(artist.Id);
                 aartistRepository.AddCictyWorks(citys, artist.Id);
- 
 
 
- 
+
+
 
             }
             return View("ArtistCard", artistSetings);

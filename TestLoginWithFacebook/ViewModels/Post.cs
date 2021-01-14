@@ -11,6 +11,7 @@ namespace BookingArtistMvcCore.ViewModels
     
     
         public string ImageProfile { get; set; }
+        public string NameProfile { get; set; }
         public int Likes { get; set; }
         public int Views { get; set; }
 

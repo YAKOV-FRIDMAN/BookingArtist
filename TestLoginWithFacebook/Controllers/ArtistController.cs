@@ -76,9 +76,9 @@ namespace BookingArtistMvcCore.Controllers
                 aartistRepository.AddProfileArtist(
                     new Data.ModelsData.ProfileArtist
                     {
-                        
-                        ImageProfile = fileBytes.Length > 1 ? fileBytes : null ,
-                       
+
+                        ImageProfile = fileBytes.Length > 1 ? fileBytes : null,
+
                         About = profileArtist.Description,
                         IdArtit = a.Id,
                         FullName = profileArtist.FullName
@@ -86,7 +86,7 @@ namespace BookingArtistMvcCore.Controllers
             }
             else
             {
-                if(fileBytes.Length > 1)
+                if (fileBytes.Length > 1)
                 {
                     p.ImageProfile = fileBytes;
                 }
@@ -285,37 +285,45 @@ namespace BookingArtistMvcCore.Controllers
         [Authorize]
         public IActionResult CreatePost()
         {
-            return PartialView("_CreatePost");    
+            return PartialView("_CreatePost");
         }
         [Authorize]
+        [ValidateAntiForgeryToken]
+
         public IActionResult CreateNewPost(PostNew postNew)
         {
-            var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
+            if (ModelState.IsValid)
+            {
 
-           var id=   aartistRepository.GetIdArtistByIdUser(idUser);
+                var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
 
-            byte[] fileBytes = new byte[] { };
-          
+                var id = aartistRepository.GetIdArtistByIdUser(idUser);
+
+                byte[] fileBytes = new byte[] { };
+
 
                 using (var ms = new MemoryStream())
                 {
-                   postNew.ImageFile.CopyTo(ms);
+                    postNew.ImageFile.CopyTo(ms);
                     fileBytes = ms.ToArray();
-                   
+
                     // act on the Base64 data
                 }
+
+                aartistRepository.AddPost(new Data.ModelsData.Post
+                {
+
+                    idArtist = id,
+                    Description = postNew.Description,
+                    Title = postNew.Title,
+                    Image = fileBytes,
+
+
+                });
+            }
+                return RedirectToAction("MyPost");
             
-            aartistRepository.AddPost(new Data.ModelsData.Post
-            {
 
-                idArtist = id,
-                Description = postNew.Description,
-                 Title = postNew.Title,
-                 Image = fileBytes,
-                 
-
-            });
-            return RedirectToAction("MyPost");
         }
         [Authorize]
         public IActionResult MyPost()
@@ -323,13 +331,16 @@ namespace BookingArtistMvcCore.Controllers
             var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
 
             var id = aartistRepository.GetIdArtistByIdUser(idUser);
-            var post =  aartistRepository.GetPostByIdArtist(id);
+            var post = aartistRepository.GetPostByIdArtist(id);
+            var profile = aartistRepository.GetProfileArtistByIdAtris(id);
             List<ViewModels.Post> posts = post.Select(item => new ViewModels.Post
             {
                 Description = item.Description,
                 Id = item.Id,
                 Title = item.Title,
-                Image = Convert.ToBase64String(item.Image)
+                Image = Convert.ToBase64String(item.Image),
+                ImageProfile = Convert.ToBase64String(profile.ImageProfile),
+                NameProfile = profile.FullName
 
             }).ToList();
             return View(posts);

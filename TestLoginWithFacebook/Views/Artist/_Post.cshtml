@@ -1,7 +1,7 @@
 ﻿@model BookingArtistMvcCore.ViewModels.Post
 
 
-<link href="~/css/PostStyle.css" rel="stylesheet" />
+
 
 
 <div class="card mb-3 mycenter"  >
@@ -11,11 +11,11 @@
 
                 <div class="rudus col-2">
 
-                    <img src="images/pro.jpg" class="rudus">
+                    <img src="@String.Format("data:image/gif;base64,{0}", Model.ImageProfile)" class="rudus">
                 </div>
                 <div class="col-8">
 
-                    <p style="margin: 0; margin-top: 5px;">my post</p>
+                    <p style="margin: 0; margin-top: 5px;">@Model.NameProfile</p>
                     <p style="margin: 0; margin-top: 5px;">Yesterday in 14:56</p>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 </svg>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Edit</a>
+                <a class="dropdown-item" href="/Artist/MyPost/Edit/@Model.Id">Edit</a>
                 <a class="dropdown-item" href="#">Delete</a>
                 <a class="dropdown-item" href="#">Something else here</a>
             </div>
