@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookingArtistMvcCore.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,5 +13,6 @@ namespace BookingArtistMvcCore.Data.ModelsData
         public string Description { get; set; }
         public byte[] Image { get; set; }
         public decimal Price { get; set; }
+        public Data.ModelsData.Enums.ArtistType ArtistType { get; set; }
     }
 }

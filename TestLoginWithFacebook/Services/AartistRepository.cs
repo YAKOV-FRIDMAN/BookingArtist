@@ -239,7 +239,7 @@ namespace BookingArtistMvcCore.Services
 
         public int GetIdArtistByUserNmae(string UserName)
         {
-          
+
             throw new NotImplementedException();
         }
 
@@ -252,19 +252,19 @@ namespace BookingArtistMvcCore.Services
 
         public List<ArtistCard> GetCardsArtistByListId(List<int> ids)
         {
-           List<ArtistCard> cardsArtist =  applicationDbContext.Artists.Where(a => ids.Any(i=>i == a.Id)).Join(applicationDbContext.ProfileArtists,
-                a => a.Id,
-                p => p.IdArtit,
-                (aa, pp) => new ArtistCard
-                {
-                    Id = aa.Id,
-                    Price = aa.Price,
-                    Image = pp.ImageProfile,
-                    FullName = pp.FullName,
-                    Description = pp.About,
+            List<ArtistCard> cardsArtist = applicationDbContext.Artists.Where(a => ids.Any(i => i == a.Id)).Join(applicationDbContext.ProfileArtists,
+                 a => a.Id,
+                 p => p.IdArtit,
+                 (aa, pp) => new ArtistCard
+                 {
+                     Id = aa.Id,
+                     Price = aa.Price,
+                     Image = pp.ImageProfile,
+                     FullName = pp.FullName,
+                     Description = pp.About,
 
-                }
-                ).ToList();
+                 }
+                 ).ToList();
             return cardsArtist;
         }
 
@@ -281,15 +281,16 @@ namespace BookingArtistMvcCore.Services
             applicationDbContext.SaveChanges();
         }
 
-        public void DeletePost(int id)
+        public void DeletePost(int id, int idArtist)
         {
-            var p = GetPostById(id);
+            var p = GetPostById(id, idArtist);
             applicationDbContext.Posts.Remove(p);
+            applicationDbContext.SaveChanges();
         }
 
-        public Post GetPostById(int id)
+        public Post GetPostById(int id, int idArtist)
         {
-            return applicationDbContext.Posts.Where(p => p.Id == id).FirstOrDefault();
+            return applicationDbContext.Posts.Where(p => p.Id == id && p.idArtist == idArtist).FirstOrDefault();
         }
 
         public List<Post> GetPostByIdArtist(int idArtist)
@@ -301,6 +302,74 @@ namespace BookingArtistMvcCore.Services
         {
             return applicationDbContext.Posts.ToList();
 
+        }
+
+        public ArtistCard GetCardArtitById(int id)
+        {
+            ArtistCard cardsArtist = applicationDbContext.Artists.Where(a => a.Id == id).Join(applicationDbContext.ProfileArtists,
+                 a => a.Id,
+                 p => p.IdArtit,
+                 (aa, pp) => new ArtistCard
+                 {
+                     Id = aa.Id,
+                     Price = aa.Price,
+                     Image = pp.ImageProfile,
+                     FullName = pp.FullName,
+                     Description = pp.About,
+                     ArtistType = aa.ArtistType
+                 }
+                 ).FirstOrDefault();
+            return cardsArtist;
+        }
+
+        public void AddClient(Client client)
+        {
+            applicationDbContext.Clients.Add(client);
+            applicationDbContext.SaveChanges();
+        }
+
+        public void AddOrder(Orders orders)
+        {
+            applicationDbContext.Orders.Add(orders);
+            applicationDbContext.SaveChanges();
+        }
+
+        public bool IfClientExists(string idUser)
+        {
+            var client = applicationDbContext.Clients.Where(c => c.IdUser == idUser).FirstOrDefault();
+            return client == null ? false : true;
+        }
+
+        public Client GetClient(string idUser)
+        {
+            return applicationDbContext.Clients.Where(c => c.IdUser == idUser).FirstOrDefault();
+        }
+
+        public Microsoft.AspNetCore.Identity.IdentityUser GetIdentityUser(string idUser)
+        {
+            return applicationDbContext.Users.Where(u => u.Id == idUser).FirstOrDefault();
+
+        }
+
+        public Microsoft.AspNetCore.Identity.IdentityUser GetIdentityUserByUsurName(string userNmae)
+        {
+            return applicationDbContext.Users.Where(u => u.UserName == userNmae).FirstOrDefault();
+        }
+
+        public List<Orders> GetOrdersByClent(int id)
+        {
+            return applicationDbContext.Orders.Where(o => o.IdClient == id).ToList();
+
+        }
+
+        public string GetCityById(int id)
+        {
+            return applicationDbContext.Citys.Where(c => c.Id == id).Select(a => a.City).FirstOrDefault();
+        }
+
+        public List<Orders> GetOrdersByArtsist(int id)
+        {
+            return applicationDbContext.Orders.Where(o => o.IdAtris == id).ToList();
         }
     }
 }

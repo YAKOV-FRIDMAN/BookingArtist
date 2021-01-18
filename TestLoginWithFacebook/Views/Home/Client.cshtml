@@ -1,0 +1,21 @@
+﻿@model BookingArtistMvcCore.Data.ModelsData.Client
+
+@{
+}
+
+<div class="container">
+    <div class="row">
+        <div class="form-group">
+            <label asp-for="FullName" class="control-label"></label>
+            <input asp-for="FullName" class="form-control" disabled />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="form-group">
+
+            <a href="/home/Orders">Orders</a>
+        </div>
+    </div>
+</div>

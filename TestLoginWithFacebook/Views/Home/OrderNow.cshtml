@@ -1,0 +1,76 @@
+﻿@model BookingArtistMvcCore.ViewModels.Order
+
+
+@{
+    ViewData["Title"] = "OrderNow";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Order Now</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="OrderNowSubmit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NameArtist" class="control-label"></label>
+                <input asp-for="NameArtist" class="form-control" />
+                <span asp-validation-for="NameArtist" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateTimeEvent" class="control-label"></label>
+                <input asp-for="DateTimeEvent" class="form-control" />
+                <span asp-validation-for="DateTimeEvent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArtistType" class="control-label"></label>
+                <input asp-for="ArtistType" class="form-control" />
+                <span asp-validation-for="ArtistType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventType" class="control-label"></label>
+                <input asp-for="EventType" class="form-control" />
+                <span asp-validation-for="EventType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NameClient" class="control-label"></label>
+                <input asp-for="NameClient" class="form-control" />
+                <span asp-validation-for="NameClient" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneClient" class="control-label"></label>
+                <input asp-for="PhoneClient" class="form-control" />
+                <span asp-validation-for="PhoneClient" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="IdArtist" value="@Model.IdArtist" />
+            <div class="form-group">
+                <input type="submit" value="Order" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@*<div>
+        <a asp-action="Index">Back to List</a>disabled
+    </div>*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

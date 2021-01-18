@@ -20,6 +20,7 @@ using BookingArtistMvcCore.Data.ModelsData;
 using BookingArtistMvcCore.Models;
 using BookingArtistMvcCore.Services;
 using BookingArtistMvcCore.ViewModels;
+using System.Text.Encodings.Web;
 
 namespace BookingArtistMvcCore.Controllers
 {
@@ -186,17 +187,87 @@ namespace BookingArtistMvcCore.Controllers
             })).ToList();
 
             ViewData["DateSerach"] = searchArtist.TimeEvent;
+            ViewData["DateSerachAll"] = searchArtist;
 
             return View("ResultArtist", a1);
         }
 
-        public IActionResult ViewArtist(int id, DateTime TiemSerch)
+        public IActionResult ViewArtist(int id, DateTime TiemSerch, string city)
         {
 
+            var a = aartistRepository.GetCardArtitById(id);
+            var artis = new ArtistExtened
+            {
+                ArtistType = (ArtistType)a.ArtistType,
+                Id = id,
+                Description = a.Description,
+                FullName = a.FullName,
+                Price = a.Price,
+                IimagePath = Convert.ToBase64String(a.Image)
 
-            return View();
+            };
+            ViewData["DateSerach1"] = TiemSerch;
+            ViewData["city"] = city;
+
+            return View(artis);
+        }
+        [Authorize]
+        public IActionResult OrderNow(int id, DateTime TiemSerch, string city)
+        {
+            var p = aartistRepository.GetProfileArtistByIdAtris(id);
+            var a = aartistRepository.GetArtitById(id);
+           
+            var user = aartistRepository.GetIdentityUserByUsurName(User.Identity.Name);
+
+            var client = aartistRepository.GetClient(user.Id);
+            Order order = new Order
+            {
+                DateTimeEvent = TiemSerch,
+                City = city,
+                NameArtist = p.FullName,
+                ArtistType = (ArtistType)a.ArtistType,
+                EventType = (EventType)a.EventType,
+                Price = a.Price,
+                NameClient = client.FullName,
+                PhoneClient = user.PhoneNumber,
+                IdArtist = id
+
+            };
+         
+            return View(order);
         }
 
+        public IActionResult OrderNowSubmit(Order order)
+        {
+            
+            var user = aartistRepository.GetIdentityUserByUsurName(User.Identity.Name);
+
+             var client = aartistRepository.GetClient(user.Id);
+
+            aartistRepository.AddOrder(new Orders
+            {
+                IdAtris = order.IdArtist,
+                IdClient = client.Id,
+                IdCity = aartistRepository.SearchCity(order.City).FirstOrDefault().Id,
+                IfApprovedOrder = false,
+                IfPaid = false,
+                Price = order.Price,
+                DateEvent = order.DateTimeEvent,
+                OrderDate = DateTime.Now,
+               
+            }) ;
+
+           
+
+            emailSender.SendEmailAsync(user.Email, " הזמנת אומן לאיורע בתאריך" + order.DateTimeEvent.ToString(),
+                "<h1>הזמנה באתר booking artist</h1>"+
+                "<hr/>"+
+                $"<h4>עיר: {order.City}</h4>"+
+                $"<h4>שם אומן {order.NameArtist}</h4>" +
+                "<h4></h4>" +
+                $"<a href='http://bookingtestsite.azurewebsites.net/home/Orders'>youer order</a>");
+            return RedirectToAction("Client");
+        }
 
         [HttpPost]
         public JsonResult SearchCity(string citySearch)
@@ -274,6 +345,57 @@ namespace BookingArtistMvcCore.Controllers
             return View("ArtistCard", artistSetings);
 
         }
+
+        [Authorize]
+        public IActionResult JoiningClient()
+        {
+            return View();
+        }
+        [Authorize]
+        public IActionResult JoiningClientJoining(string FullName)
+        {
+            var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
+            aartistRepository.AddClient(new Data.ModelsData.Client
+            {
+                IdUser = idUser,
+                FullName = FullName
+            });
+            return RedirectToAction("Client");
+        }
+        [Authorize]
+        public IActionResult Client()
+        {
+           
+            var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
+            if (aartistRepository.IfClientExists(idUser) == false)
+            {
+                return RedirectToAction("JoiningClient");
+            }
+            else
+            {
+                var client =  aartistRepository.GetClient(idUser);
+                return View(client);
+            }
+        }
+
+        [Authorize]
+        public IActionResult Orders()
+        {
+            var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
+            var client = aartistRepository.GetClient(idUser);
+            var orders=  aartistRepository.GetOrdersByClent(client.Id);
+            List<Order> orders1 = orders.Select(o => new Order
+            {
+                City = aartistRepository.GetCityById(o.IdCity),
+                Price = o.Price,
+               DateTimeEvent = o.DateEvent,
+               
+
+            }).ToList();
+            return View(orders1);
+        }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

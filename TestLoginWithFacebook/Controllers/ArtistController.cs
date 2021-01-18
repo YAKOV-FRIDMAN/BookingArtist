@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using BookingArtistMvcCore.Data.ModelsData;
 using BookingArtistMvcCore.Services;
 using BookingArtistMvcCore.ViewModels;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace BookingArtistMvcCore.Controllers
 {
@@ -157,57 +159,21 @@ namespace BookingArtistMvcCore.Controllers
         [Authorize]
         public IActionResult Orders()
         {
-            List<Orders> orders = new List<Orders>
-            {
-                new Orders
-                {
-                    Id = 1,
-                    DateEvent = DateTime.Now.AddDays(15),
-                    NameClient = "avram s",
-                    IfApprovedOrder = true,
-                    IfPaid = false,
-                    OrderDate = DateTime.Now,
-                    PhoneNumberClient = "0583545988",
-                    Price = 2000,
-                    IdCity = 1
-                },
-                 new Orders
-                {
-                    Id = 2,
-                    DateEvent = DateTime.Now.AddDays(54),
-                    NameClient = "yakov s",
-                    IfApprovedOrder = false,
-                    IfPaid = true,
-                    OrderDate = DateTime.Now,
-                    PhoneNumberClient = "0535406353",
-                    Price = 3000,
-                    IdCity = 22
-                },
-                  new Orders
-                {
-                    Id = 3,
-                    DateEvent = DateTime.Now.AddDays(100),
-                    NameClient = "moshe ",
-                    IfApprovedOrder = true,
-                    IfPaid = false,
-                    OrderDate = DateTime.Now,
-                    PhoneNumberClient = "054652985",
-                    Price = 2050,
-                    IdCity = 3
-                },
-                   new Orders
-                {
-                    Id = 4,
-                    DateEvent = DateTime.Now.AddDays(10),
-                    NameClient = "shemon",
-                    IfApprovedOrder = true,
-                    IfPaid = false,
-                    OrderDate = DateTime.Now,
-                    PhoneNumberClient = "052562655",
-                    Price = 1500,
-                    IdCity = 1
-                },
-            };
+            var artist = aartistRepository.GetArtitByUserNmae(User.Identity.Name);
+
+           var ors= aartistRepository.GetOrdersByArtsist(artist.Id);
+            List<OrderForArtist> orders = ors.Select(o => new OrderForArtist { 
+                
+                City = aartistRepository.GetCityById(o.IdCity),
+                Price = o.Price,
+                IfPaid = o.IfPaid,
+                IfApprovedOrder = o.IfApprovedOrder,
+                DateTimeEvent = o.DateEvent,
+                OrderDate = o.OrderDate,
+                
+
+            }).ToList();
+
             return View(orders);
         }
 
@@ -310,13 +276,15 @@ namespace BookingArtistMvcCore.Controllers
                     // act on the Base64 data
                 }
 
+               
+
                 aartistRepository.AddPost(new Data.ModelsData.Post
                 {
 
                     idArtist = id,
                     Description = postNew.Description,
                     Title = postNew.Title,
-                    Image = fileBytes,
+                    Image = ResizeImage(fileBytes),
 
 
                 });
@@ -344,6 +312,35 @@ namespace BookingArtistMvcCore.Controllers
 
             }).ToList();
             return View(posts);
+        }
+
+        [Authorize]
+        public IActionResult DeletePost(int id)
+        {
+            var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
+            var idArtist = aartistRepository.GetIdArtistByIdUser(idUser);
+            aartistRepository.DeletePost(id , idArtist);
+            return RedirectToAction("MyPost");
+        }
+
+        byte[] ResizeImage(byte[] btyesImage)
+        {
+            var jpegQuality = 50;
+            Image image;
+            using (var inputStream = new MemoryStream(btyesImage))
+            {
+                image = Image.FromStream(inputStream);
+                var jpegEncoder = ImageCodecInfo.GetImageDecoders()
+                  .First(c => c.FormatID == ImageFormat.Jpeg.Guid);
+                var encoderParameters = new EncoderParameters(1);
+                encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, jpegQuality);
+                Byte[] outputBytes;
+                using (var outputStream = new MemoryStream())
+                {
+                    image.Save(outputStream, jpegEncoder, encoderParameters);
+                    return outputBytes = outputStream.ToArray();
+                }
+            }
         }
     }
 }

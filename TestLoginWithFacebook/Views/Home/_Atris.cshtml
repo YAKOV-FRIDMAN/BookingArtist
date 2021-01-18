@@ -2,6 +2,7 @@
 
 @{ 
     var dateSerch = ViewData["DateSerach"] as DateTime?;
+    var dateSerch1 = ViewData["DateSerachAll"] as BookingArtistMvcCore.ViewModels.SearchArtist;
 }
  
 <p>
@@ -73,7 +74,8 @@
         
             <h5>@item.Price</h5>
             @*<a href="#" class="btn btn-primary">Go somewhere</a>*@
-            @Html.ActionLink("ViewArtist", "ViewArtist", new { id = item.Id  , TiemSerch =  dateSerch.Value.Date })
+            @Html.ActionLink("ViewArtist", "ViewArtist", new { id = item.Id  , TiemSerch =  dateSerch.Value.Date  , city = dateSerch1.City})
+           
             
 
 </div>

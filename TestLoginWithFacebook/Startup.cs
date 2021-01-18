@@ -37,19 +37,28 @@ namespace BookingArtistMvcCore
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
-            //services.AddAuthentication().AddFacebook(facebookOptions =>
-            //{
-            //    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-            //    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            //});
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                //facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                //facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"]; 
+                facebookOptions.AppId = "1746392355542378";
+                facebookOptions.AppSecret = "eda8980b30b09c7527a0204529f26a74";
+                //if (!isDevelopment)
+                //{
+                //    facebookOptions.CallbackPath = "https://bookingtestsite.azurewebsites.net";
+
+                //}
+                facebookOptions.SaveTokens = true;
+            });
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IAartistRepository, AartistRepository>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
         }
-
+        bool isDevelopment;
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            isDevelopment = env.IsDevelopment();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -65,6 +74,7 @@ namespace BookingArtistMvcCore
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseDefaultFiles();
             app.UseRouting();

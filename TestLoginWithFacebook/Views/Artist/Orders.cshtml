@@ -1,91 +1,105 @@
-﻿@model IEnumerable<BookingArtistMvcCore.Data.ModelsData.Orders>
+﻿@model IEnumerable<BookingArtistMvcCore.ViewModels.OrderForArtist>
 
 @{
     ViewData["Title"] = "Orders";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class=" container" style=" box-shadow: -2px 3px 20px -1px #817f7f;">
+
+<div class="container " style="box-shadow: -2px 3px 20px -1px #817f7f;">
+   
+    <h4 class="text-center">Orders</h4>
+    <br />
+
+    <div class="table-responsive">
 
 
-
-
-
-    <h4>Orders</h4>
-
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.NameClient)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PhoneNumberClient)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IdCity)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IfPaid)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IfApprovedOrder)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.OrderDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateEvent)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IdAtris)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+        <table class="table table-hover">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NameClient)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PhoneNumberClient)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IdCity)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IfPaid)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IfApprovedOrder)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OrderDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateEvent)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IdAtris)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IfPaid)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IfApprovedOrder)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.City)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateTimeEvent)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.NameClient)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PhoneClient)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IfPaid)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IfApprovedOrder)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.City)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateTimeEvent)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NameClient)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhoneClient)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
 
 </div>
