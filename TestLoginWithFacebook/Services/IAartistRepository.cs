@@ -57,6 +57,8 @@ namespace BookingArtistMvcCore.Services
         public Post GetPostById(int id, int idArtist);
         public List<Post> GetPostByIdArtist(int idArtist);
         public List<Post> GetAllPost();
+        public Task<List<Post>> GetAllPostAsinc();
+        public Task<List<PostCardView>> GetAllPostPerfectAsinc();
 
         public bool IfClientExists(string idUser);
         public Client GetClient(string idUser);

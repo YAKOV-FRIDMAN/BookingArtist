@@ -160,21 +160,29 @@ namespace BookingArtistMvcCore.Controllers
         public IActionResult Orders()
         {
             var artist = aartistRepository.GetArtitByUserNmae(User.Identity.Name);
+            if (artist != null)
+            {
 
-           var ors= aartistRepository.GetOrdersByArtsist(artist.Id);
-            List<OrderForArtist> orders = ors.Select(o => new OrderForArtist { 
-                
-                City = aartistRepository.GetCityById(o.IdCity),
-                Price = o.Price,
-                IfPaid = o.IfPaid,
-                IfApprovedOrder = o.IfApprovedOrder,
-                DateTimeEvent = o.DateEvent,
-                OrderDate = o.OrderDate,
-                
+                var ors = aartistRepository.GetOrdersByArtsist(artist.Id);
+                List<OrderForArtist> orders = ors.Select(o => new OrderForArtist
+                {
 
-            }).ToList();
+                    City = aartistRepository.GetCityById(o.IdCity),
+                    Price = o.Price,
+                    IfPaid = o.IfPaid,
+                    IfApprovedOrder = o.IfApprovedOrder,
+                    DateTimeEvent = o.DateEvent,
+                    OrderDate = o.OrderDate,
 
-            return View(orders);
+
+                }).ToList();
+
+                return View(orders);
+            }
+            else
+            {
+                return RedirectToAction("ArtistCard");
+            }
         }
 
         [Authorize]
@@ -276,7 +284,7 @@ namespace BookingArtistMvcCore.Controllers
                     // act on the Base64 data
                 }
 
-               
+
 
                 aartistRepository.AddPost(new Data.ModelsData.Post
                 {
@@ -285,33 +293,44 @@ namespace BookingArtistMvcCore.Controllers
                     Description = postNew.Description,
                     Title = postNew.Title,
                     Image = ResizeImage(fileBytes),
-
+                    UploadTime = DateTime.Now
 
                 });
             }
-                return RedirectToAction("MyPost");
-            
+            return RedirectToAction("MyPost");
+
 
         }
         [Authorize]
         public IActionResult MyPost()
         {
-            var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
 
-            var id = aartistRepository.GetIdArtistByIdUser(idUser);
-            var post = aartistRepository.GetPostByIdArtist(id);
-            var profile = aartistRepository.GetProfileArtistByIdAtris(id);
-            List<ViewModels.Post> posts = post.Select(item => new ViewModels.Post
+            var artist = aartistRepository.GetArtitByUserNmae(User.Identity.Name);
+            if (artist != null)
             {
-                Description = item.Description,
-                Id = item.Id,
-                Title = item.Title,
-                Image = Convert.ToBase64String(item.Image),
-                ImageProfile = Convert.ToBase64String(profile.ImageProfile),
-                NameProfile = profile.FullName
 
-            }).ToList();
-            return View(posts);
+
+                var post = aartistRepository.GetPostByIdArtist(artist.Id);
+               
+                var profile = aartistRepository.GetProfileArtistByIdAtris(artist.Id);
+                List<ViewModels.Post> posts = post.Select(item => new ViewModels.Post
+                {
+                    Description = item.Description,
+                    Id = item.Id,
+                    Title = item.Title,
+                    Image = Convert.ToBase64String(item.Image),
+                    ImageProfile = Convert.ToBase64String(profile.ImageProfile),
+                    NameProfile = profile.FullName,
+                    UploadTime = item.UploadTime
+
+                }).ToList();
+                return View(posts);
+            }
+            else
+            {
+                return RedirectToAction("ArtistCard");
+
+            }
         }
 
         [Authorize]
@@ -319,7 +338,7 @@ namespace BookingArtistMvcCore.Controllers
         {
             var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
             var idArtist = aartistRepository.GetIdArtistByIdUser(idUser);
-            aartistRepository.DeletePost(id , idArtist);
+            aartistRepository.DeletePost(id, idArtist);
             return RedirectToAction("MyPost");
         }
 

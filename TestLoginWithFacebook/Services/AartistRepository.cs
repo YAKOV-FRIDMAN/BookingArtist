@@ -119,10 +119,10 @@ namespace BookingArtistMvcCore.Services
         public string GetIdUserByUsurName(string UserName)
         {
             var n = applicationDbContext.Users.
-                    Where(a => a.UserName == UserName).FirstOrDefault();
+                    Where(a => a.UserName == UserName).Select(i => i.Id).FirstOrDefault();
 
             // var c = applicationDbContext.UserClaims.Where(a => a.UserId == n.Id).FirstOrDefault();
-            return n.Id;
+            return n;
         }
 
         public List<int> SearchArtsit(string city, DateTime timeEvent, Enums.EventType eventType, Enums.ArtistType artistType)
@@ -132,8 +132,9 @@ namespace BookingArtistMvcCore.Services
             string daySelect = timeEvent.DayOfWeek.ToString();
             var idArtitsResultOfDay = applicationDbContext.DaysWorks.FromSqlRaw($"select * from DaysWorks where {daySelect} = 1").Select(a => a.IdArtit).ToList();
 
+            var oa = applicationDbContext.Orders.Where(o => o.DateEvent.DayOfYear == timeEvent.DayOfYear).Select(o => o.IdAtris).ToList();
 
-            return applicationDbContext.Artists.Where(i => idArtitsResultOfCitys.Any(b => b == i.Id) && idArtitsResultOfDay.Any(b => b == i.Id)).
+            return applicationDbContext.Artists.Where(i => idArtitsResultOfCitys.Any(b => b == i.Id) && idArtitsResultOfDay.Any(b => b == i.Id) && !oa.Any(o => o == i.Id)).
                 Where(a => (ArtistType)a.ArtistType == artistType &&
              (EventType)a.EventType == eventType).Select(a => a.Id).ToList();
         }
@@ -239,8 +240,9 @@ namespace BookingArtistMvcCore.Services
 
         public int GetIdArtistByUserNmae(string UserName)
         {
+            var idUser = GetIdUserByUsurName(UserName);
+            return applicationDbContext.Artists.Where(a => a.IdUser == idUser).Select(i => i.Id).FirstOrDefault();
 
-            throw new NotImplementedException();
         }
 
         public void AddProfileArtist(ProfileArtist profileArtist)
@@ -370,6 +372,31 @@ namespace BookingArtistMvcCore.Services
         public List<Orders> GetOrdersByArtsist(int id)
         {
             return applicationDbContext.Orders.Where(o => o.IdAtris == id).ToList();
+        }
+
+        public async Task<List<Post>> GetAllPostAsinc()
+        {
+            return await applicationDbContext.Posts.ToListAsync();
+        }
+
+        public async Task<List<PostCardView>> GetAllPostPerfectAsinc()
+        {
+            var p = await applicationDbContext.Posts.Join(applicationDbContext.ProfileArtists,
+                 i => i.idArtist,
+                 p => p.IdArtit,
+                 (ii, pp) => new PostCardView
+                 {
+                    Description = ii.Description,
+                    Title = ii.Title,
+                    Id = ii.Id,
+                    FullName = pp.FullName,
+                    Image = ii.Image,
+                    idArtist = ii.idArtist,
+                    ImageProfile = pp.ImageProfile,
+                    UploadTime = ii.UploadTime
+                 }
+                 ).ToListAsync();
+            return p;
         }
     }
 }

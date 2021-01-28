@@ -86,7 +86,7 @@ namespace XUnitTestProject1
                      DateTime.Now,
                      BookingArtistMvcCore.Data.ModelsData.Enums.EventType.AbBigEvent,
                      BookingArtistMvcCore.Data.ModelsData.Enums.ArtistType.Singer);
-                var result1 =  aartistRepository.GetCardsArtistByListId(result);
+                var result1 = aartistRepository.GetCardsArtistByListId(result);
             }
         }
         [Fact]
@@ -119,6 +119,19 @@ namespace XUnitTestProject1
 
             }
         }
+        [Fact]
+        public void TestGetAllPost()
+        {
+            using (var context = _serviceProvider.GetService<ApplicationDbContext>())
+            {
+
+                AartistRepository aartistRepository = new AartistRepository(context);
+                var posts =   aartistRepository.GetAllPost();
+
+
+            }
+        }
     }
+ 
 }
-         
+

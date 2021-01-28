@@ -9,18 +9,18 @@
 
 @*<h1>SearchArtsit</h1>
 
-<h4>SearchArtist</h4>
-<hr />*@
+    <h4>SearchArtist</h4>
+    <hr />*@
 
- 
-<div id="booking" class="section" >
+
+<div id="booking" class="section">
     <div class="section-center">
         <div class="container">
             <div class="row">
                 <div class="booking-form">
                     <form asp-action="SearchArtsitSubmit">
-                      
-                        <div class="row"    >
+
+                        <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label asp-for="City" class="control-label " style="color: white"></label>
@@ -51,21 +51,34 @@
                                     <span asp-validation-for="TypeArtist" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class=" col-12 form-group">
-                                <input type="submit" value="Search" class="btn btn-primary" />
+                            <div class=" col-12 form-group text-center">
+                                <button type="submit" class="btn btn-info">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                                    </svg>
+                                    Search
+                                </button>
+                                @*<input type="submit" value="Search" class="btn btn-primary" />*@
                             </div>
                         </div>
-                       
+
                     </form>
                 </div>
             </div>
+            
         </div>
     </div>
 </div>
+
+<div id="posts">
+    <img style="max-width: 200px;" class="rounded mx-auto d-block" src="https://wpamelia.com/wp-content/uploads/2018/11/ezgif-2-6d0b072c3d3f.gif" />
+
+</div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<script>
+    <script>
             $(document).ready(function () {
                 $("#City").autocomplete({
                 source: function (request, response) {
@@ -90,6 +103,22 @@
 
                 }
             });
-        });
-</script>
+            });
+
+    window.onload = function () {
+
+        var containerPost = $('#posts');
+
+
+
+
+        $.get("/home/GetAllPostsAsinc/" ).done(function (data) {
+                containerPost.html(data);
+
+            })
+
+
+
+    };
+    </script>
 }

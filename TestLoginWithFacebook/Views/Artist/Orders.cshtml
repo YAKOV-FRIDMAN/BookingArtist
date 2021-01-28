@@ -6,15 +6,17 @@
 }
 
 
+
+
 <div class="container " style="box-shadow: -2px 3px 20px -1px #817f7f;">
-   
+
     <h4 class="text-center">Orders</h4>
     <br />
 
     <div class="table-responsive">
 
 
-        <table class="table table-hover">
+        <table class="table table-hover display" id="orderTable">
             <thead>
                 <tr>
                     <th>
@@ -103,3 +105,23 @@
 
 
 </div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+
+        window.onload = (event) => {
+            console.log('page is fully loaded');
+
+
+
+            $(document).ready(function () {
+                $('#orderTable').DataTable();
+            });
+
+        };
+    </script>
+}

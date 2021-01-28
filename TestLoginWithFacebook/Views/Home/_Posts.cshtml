@@ -1,0 +1,16 @@
+﻿@model IEnumerable<BookingArtistMvcCore.ViewModels.Post>
+
+@{
+   // ViewData["Title"] = "_Posts";
+   // Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/css/PostStyle.css" rel="stylesheet" />
+
+
+@foreach (var item in Model)
+{
+
+    @Html.Partial("_Post.cshtml", item)
+}
+

@@ -1,43 +1,25 @@
 ﻿@model BookingArtistMvcCore.ViewModels.Post
 
 
-
-
-@{
+@{ 
     var a = DateTime.Now - Model.UploadTime;
 }
 
 
 <div class="card mb-3 mycenter">
     <div class="row">
-        <div class="col-10">
-            <div class="row">
 
-                <div class="rudus col-2">
+        <div class="rudus col-2">
 
-                    <img src="@String.Format("data:image/gif;base64,{0}", Model.ImageProfile)" class="rudus">
-                </div>
-                <div class="col-8">
-
-                    <p style="margin: 0; margin-top: 5px;">@Model.NameProfile</p>
-                    <p style="margin: 0; margin-top: 5px;">Yesterday in @Model.UploadTime</p>
-                </div>
-            </div>
+            <img src="@String.Format("data:image/gif;base64,{0}", Model.ImageProfile)" class="rudus">
         </div>
-        <div class="col-2 text-center">
-            <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="buPost">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                </svg>
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="/Artist/MyPost/EditPost/@Model.Id">Edit</a>
-                <a class="dropdown-item" href="/Artist/DeletePost/@Model.Id">Delete</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+        <div class="col-8" style="margin-left: 20px">
 
+            <p style="margin: 0; margin-top: 5px;">@Model.NameProfile</p>
+            <p style="margin: 0; margin-top: 5px;">Yesterday in @Model.UploadTime</p>
         </div>
     </div>
+
 
     <div class="card-body">
         <h5 class="card-title">@Model.Title</h5>

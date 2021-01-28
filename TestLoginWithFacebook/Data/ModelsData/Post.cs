@@ -12,6 +12,7 @@ namespace BookingArtistMvcCore.Data.ModelsData
         public string Description { get; set; }
         public byte[] Image { get; set; }
         public int idArtist { get; set; }
+        public DateTime UploadTime { get; set; }
         public Artist Artist { get; set; }
 
     }

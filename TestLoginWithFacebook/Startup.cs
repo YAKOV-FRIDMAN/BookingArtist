@@ -35,6 +35,15 @@ namespace BookingArtistMvcCore
                     Configuration.GetConnectionString("DbAzure")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.Configure<IdentityOptions>(option =>
+            {
+                option.Password.RequiredLength = 6;
+                option.Password.RequiredUniqueChars = 3;
+                option.Password.RequireUppercase = false;
+                option.Password.RequireDigit = false;
+                option.Password.RequireNonAlphanumeric = false;
+                option.Password.RequiredUniqueChars = 0;
+            });
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddAuthentication().AddFacebook(facebookOptions =>
