@@ -13,6 +13,8 @@ using BookingArtistMvcCore.Services;
 using BookingArtistMvcCore.ViewModels;
 using System.Drawing.Imaging;
 using System.Drawing;
+using BookingArtistMvcCore.ViewModels.Validations;
+using Microsoft.AspNetCore.Http;
 
 namespace BookingArtistMvcCore.Controllers
 {
@@ -301,6 +303,54 @@ namespace BookingArtistMvcCore.Controllers
 
 
         }
+
+        //[HttpPost("UploadFile")]
+        public JsonResult UploadFile(IFormFile formFile)
+        {
+
+            return Json("ok");
+        }
+
+        public JsonResult CreateNewPostJson(PostNew postNew)
+        {
+            if (ModelState.IsValid)
+            {
+
+
+
+
+                //var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
+
+                //var id = aartistRepository.GetIdArtistByIdUser(idUser);
+
+                //byte[] fileBytes = new byte[] { };
+
+
+                //using (var ms = new MemoryStream())
+                //{
+                //    postNew.ImageFile.CopyTo(ms);
+                //    fileBytes = ms.ToArray();
+
+                //    // act on the Base64 data
+                //}
+
+
+
+                //aartistRepository.AddPost(new Data.ModelsData.Post
+                //{
+
+                //    idArtist = id,
+                //    Description = postNew.Description,
+                //    Title = postNew.Title,
+                //    Image = ResizeImage(fileBytes),
+                //    UploadTime = DateTime.Now
+
+                //});
+            }
+            return Json("ok");
+
+
+        }
         [Authorize]
         public IActionResult MyPost()
         {
@@ -311,7 +361,7 @@ namespace BookingArtistMvcCore.Controllers
 
 
                 var post = aartistRepository.GetPostByIdArtist(artist.Id);
-               
+
                 var profile = aartistRepository.GetProfileArtistByIdAtris(artist.Id);
                 List<ViewModels.Post> posts = post.Select(item => new ViewModels.Post
                 {

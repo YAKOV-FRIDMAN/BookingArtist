@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BookingArtistMvcCore.Data;
 using BookingArtistMvcCore.Services;
+using BookingArtistMvcCore.ViewModels.Validations;
 
 namespace BookingArtistMvcCore
 {
@@ -62,6 +63,11 @@ namespace BookingArtistMvcCore
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IAartistRepository, AartistRepository>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
+
+            services.AddMvc(properties =>
+            {
+                properties.ModelBinderProviders.Insert(0, new JsonModelBinderProvider());
+            });
         }
         bool isDevelopment;
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

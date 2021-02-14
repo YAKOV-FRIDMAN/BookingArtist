@@ -7,17 +7,18 @@
 
 <link href="~/css/PostStyle.css" rel="stylesheet" />
 
+
 <div id="PlaceHolderHere"></div>
 
 <div class="container " style="box-shadow: -2px 3px 20px -1px #817f7f;">
     <div class="">
 
         @*@foreach (var item in Model)
-        {
-            <div>
+            {
+                <div>
 
-            </div>
-        }*@
+                </div>
+            }*@
         @*@Html.Partial("_Post.cshtml", new TestLoginWithFacebook.Data.ModelsData.Post())*@
 
         <br />
@@ -83,31 +84,16 @@
             @Html.Partial("_Post.cshtml", item)
         }
         @*<partial name="_Post" />
-        <partial name="_Post" />
-        <partial name="_Post" />*@
+            <partial name="_Post" />
+            <partial name="_Post" />*@
 
     </div>
 
 </div>
 
+
 @section Scripts {
 
-
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        var PlaceHolderHereElement = $('#PlaceHolderHere');
-
-        $('button[data-toggle="ajax-model"]').click(function (event) {
-            var url = $(this).data('url');
-            $.get(url).done(function (data) {
-                PlaceHolderHereElement.html(data);
-                PlaceHolderHereElement.find('.modal').modal('show');
-            })
-        })
-
-        function preview() {
-            frame.src = URL.createObjectURL(event.target.files[0]);
-        }
-    </script>
+    <script src="~/js/posts.js"></script>
 
 }
