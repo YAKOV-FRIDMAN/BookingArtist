@@ -55,7 +55,7 @@ namespace BookingArtistMvcCore.Controllers
         {
             return RedirectToAction("SearchArtsit");
         }
-       
+
 
 
         public IActionResult SearchArtsit()
@@ -68,7 +68,7 @@ namespace BookingArtistMvcCore.Controllers
 
             var result = aartistRepository.SearchArtsit(searchArtist.City, searchArtist.TimeEvent, (Enums.EventType)searchArtist.TypeEvent, (Enums.ArtistType)searchArtist.TypeArtist);
             var cardsArtits = aartistRepository.GetCardsArtistByListId(result);
-            
+
 
             List<Artis> a1 = (cardsArtits.Select(item => new Artis
             {
@@ -110,7 +110,7 @@ namespace BookingArtistMvcCore.Controllers
         {
             var p = aartistRepository.GetProfileArtistByIdAtris(id);
             var a = aartistRepository.GetArtitById(id);
-           
+
             var user = aartistRepository.GetIdentityUserByUsurName(User.Identity.Name);
 
             var client = aartistRepository.GetClient(user.Id);
@@ -127,16 +127,16 @@ namespace BookingArtistMvcCore.Controllers
                 IdArtist = id
 
             };
-         
+
             return View(order);
         }
 
-        public IActionResult OrderNowSubmit(Order order)
+        public async Task<IActionResult> OrderNowSubmit(Order order)
         {
-            
+
             var user = aartistRepository.GetIdentityUserByUsurName(User.Identity.Name);
 
-             var client = aartistRepository.GetClient(user.Id);
+            var client = aartistRepository.GetClient(user.Id);
 
             aartistRepository.AddOrder(new Orders
             {
@@ -148,18 +148,18 @@ namespace BookingArtistMvcCore.Controllers
                 Price = order.Price,
                 DateEvent = order.DateTimeEvent,
                 OrderDate = DateTime.Now,
-               
-            }) ;
 
-           
+            });
 
-            emailSender.SendEmailAsync(user.Email, " הזמנת אומן לאיורע בתאריך" + order.DateTimeEvent.ToString(),
-                "<h1>הזמנה באתר booking artist</h1>"+
-                "<hr/>"+
-                $"<h4>עיר: {order.City}</h4>"+
-                $"<h4>שם אומן {order.NameArtist}</h4>" +
-                "<h4></h4>" +
-                $"<a href='http://bookingtestsite.azurewebsites.net/home/Orders'>youer order</a>");
+
+
+           await emailSender.SendEmailAsync(user.Email, " הזמנת אומן לאיורע בתאריך" + order.DateTimeEvent.ToString(),
+                 "<h1>הזמנה באתר booking artist</h1>" +
+                 "<hr/>" +
+                 $"<h4>עיר: {order.City}</h4>" +
+                 $"<h4>שם אומן {order.NameArtist}</h4>" +
+                 "<h4></h4>" +
+                 $"<a href='http://bookingtestsite.azurewebsites.net/home/Orders'>youer order</a>");
             return RedirectToAction("Client");
         }
 
@@ -259,7 +259,7 @@ namespace BookingArtistMvcCore.Controllers
         [Authorize]
         public IActionResult Client()
         {
-           
+
             var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
             if (aartistRepository.IfClientExists(idUser) == false)
             {
@@ -267,7 +267,7 @@ namespace BookingArtistMvcCore.Controllers
             }
             else
             {
-                var client =  aartistRepository.GetClient(idUser);
+                var client = aartistRepository.GetClient(idUser);
                 return View(client);
             }
         }
@@ -277,13 +277,13 @@ namespace BookingArtistMvcCore.Controllers
         {
             var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
             var client = aartistRepository.GetClient(idUser);
-            var orders=  aartistRepository.GetOrdersByClent(client.Id);
+            var orders = aartistRepository.GetOrdersByClent(client.Id);
             List<Order> orders1 = orders.Select(o => new Order
             {
                 City = aartistRepository.GetCityById(o.IdCity),
                 Price = o.Price,
-               DateTimeEvent = o.DateEvent,
-               
+                DateTimeEvent = o.DateEvent,
+
 
             }).ToList();
             return View(orders1);
@@ -291,8 +291,8 @@ namespace BookingArtistMvcCore.Controllers
 
         public IActionResult GetPostsByIdArtist(int id)
         {
-           
-            var post =  aartistRepository.GetPostByIdArtist(id);
+
+            var post = aartistRepository.GetPostByIdArtist(id);
             var profile = aartistRepository.GetProfileArtistByIdAtris(id);
 
             List<ViewModels.Post> posts = post.Select(item => new ViewModels.Post
@@ -306,14 +306,14 @@ namespace BookingArtistMvcCore.Controllers
                 UploadTime = item.UploadTime
 
             }).ToList();
-            return PartialView("_Posts" , posts);
+            return PartialView("_Posts", posts);
         }
 
         public IActionResult GetAllPosts()
         {
 
-            var post = aartistRepository.GetAllPost() ;
-           // var profile = aartistRepository.GetProfileArtistByIdAtris(id);
+            var post = aartistRepository.GetAllPost();
+            // var profile = aartistRepository.GetProfileArtistByIdAtris(id);
 
             List<ViewModels.Post> posts = post.Select(item => new ViewModels.Post
             {
@@ -346,7 +346,7 @@ namespace BookingArtistMvcCore.Controllers
 
 
             }).ToList();
-            return  PartialView("_Posts", posts);
+            return PartialView("_Posts", posts);
         }
 
 

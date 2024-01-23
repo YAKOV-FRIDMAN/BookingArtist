@@ -33,7 +33,7 @@ namespace BookingArtistMvcCore
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DbAzure")));
+                    Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.Configure<IdentityOptions>(option =>
@@ -47,19 +47,19 @@ namespace BookingArtistMvcCore
             });
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddAuthentication().AddFacebook(facebookOptions =>
-            {
-                //facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                //facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"]; 
-                facebookOptions.AppId = "1746392355542378";
-                facebookOptions.AppSecret = "eda8980b30b09c7527a0204529f26a74";
-                //if (!isDevelopment)
-                //{
-                //    facebookOptions.CallbackPath = "https://bookingtestsite.azurewebsites.net";
+            //services.AddAuthentication().AddFacebook(facebookOptions =>
+            //{
+            //    //facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+            //    //facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"]; 
+            //    facebookOptions.AppId = "1746392355542378";
+            //    facebookOptions.AppSecret = "eda8980b30b09c7527a0204529f26a74";
+            //    //if (!isDevelopment)
+            //    //{
+            //    //    facebookOptions.CallbackPath = "https://bookingtestsite.azurewebsites.net";
 
-                //}
-                facebookOptions.SaveTokens = true;
-            });
+            //    //}
+            //    facebookOptions.SaveTokens = true;
+            //});
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IAartistRepository, AartistRepository>();
             services.Configure<AuthMessageSenderOptions>(Configuration);

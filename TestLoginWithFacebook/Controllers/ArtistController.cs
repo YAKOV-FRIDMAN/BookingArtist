@@ -294,7 +294,8 @@ namespace BookingArtistMvcCore.Controllers
                     idArtist = id,
                     Description = postNew.Description,
                     Title = postNew.Title,
-                    Image = ResizeImage(fileBytes),
+                   //Image = ResizeImage(fileBytes),
+                    Image = fileBytes,
                     UploadTime = DateTime.Now
 
                 });
@@ -311,7 +312,7 @@ namespace BookingArtistMvcCore.Controllers
             return Json("ok");
         }
 
-        public JsonResult CreateNewPostJson(PostNew postNew)
+        public JsonResult CreateNewPostJson([FromForm]PostNew postNew)
         {
             if (ModelState.IsValid)
             {
@@ -319,33 +320,33 @@ namespace BookingArtistMvcCore.Controllers
 
 
 
-                //var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
+                var idUser = aartistRepository.GetIdUserByUsurName(User.Identity.Name);
 
-                //var id = aartistRepository.GetIdArtistByIdUser(idUser);
+                var id = aartistRepository.GetIdArtistByIdUser(idUser);
 
-                //byte[] fileBytes = new byte[] { };
-
-
-                //using (var ms = new MemoryStream())
-                //{
-                //    postNew.ImageFile.CopyTo(ms);
-                //    fileBytes = ms.ToArray();
-
-                //    // act on the Base64 data
-                //}
+                byte[] fileBytes = new byte[] { };
 
 
+                using (var ms = new MemoryStream())
+                {
+                    postNew.ImageFile.CopyTo(ms);
+                    fileBytes = ms.ToArray();
 
-                //aartistRepository.AddPost(new Data.ModelsData.Post
-                //{
+                    // act on the Base64 data
+                }
 
-                //    idArtist = id,
-                //    Description = postNew.Description,
-                //    Title = postNew.Title,
-                //    Image = ResizeImage(fileBytes),
-                //    UploadTime = DateTime.Now
 
-                //});
+
+                aartistRepository.AddPost(new Data.ModelsData.Post
+                {
+
+                    idArtist = id,
+                    Description = postNew.Description,
+                    Title = postNew.Title,
+                    Image = ResizeImage(fileBytes),
+                    UploadTime = DateTime.Now
+
+                });
             }
             return Json("ok");
 

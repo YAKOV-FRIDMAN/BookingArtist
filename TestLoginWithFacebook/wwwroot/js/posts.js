@@ -34,16 +34,39 @@ function postPost() {
 
         }
 
-        var formData = new FormData(this);
+        //var formData = new FormData();
+        var formData = new FormData();
+        formData.append('Title', $("#Title").val());
+        formData.append('Description', $("#Description").val());
 
+        // הוספת הקובץ
+        var fileInput = $("#ImageFile")[0];
+        if (fileInput.files && fileInput.files[0]) {
+            formData.append('ImageFile', fileInput.files[0]);
+        }
 
-        $.post("/Artist/CreateNewPostJson", post, function (response) {
-            if (response == "ok") {
-                alert("ok");
+        $.ajax({
+            url: '/Artist/CreateNewPostJson',
+            type: 'POST',
+            data: formData,
+            processData: false, // אין עיבוד אוטומטי של הנתונים
+            contentType: false, // לא להגדיר סוג תוכן כי אנחנו משתמשים בFormData
+            success: function (response) {
+                console.log('Success:', response);
+                $("#closeMoelPost").click();
+            },
+            error: function (error) {
+                console.error('Error:', error);
             }
-            else {
-                alert("error");
-            }
-        })
+        });
+
+        //$.post("/Artist/CreateNewPostJson", post, function (response) {
+        //    if (response == "ok") {
+        //        alert("ok");
+        //    }
+        //    else {
+        //        alert("error");
+        //    }
+        //})
     })
 }

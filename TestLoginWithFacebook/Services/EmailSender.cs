@@ -10,7 +10,7 @@ namespace BookingArtistMvcCore.Services
     {
         public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
         {
-             Options = optionsAccessor.Value;
+            Options = optionsAccessor.Value;
             //Options.SendGridKey = "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";
             //Options.SendGridUser = "RickAndMSFT";
         }
@@ -38,7 +38,8 @@ namespace BookingArtistMvcCore.Services
             // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
             msg.SetClickTracking(false, false);
 
-            return client.SendEmailAsync(msg);
+            var res = client.SendEmailAsync(msg);
+            return res;
         }
     }
 }
