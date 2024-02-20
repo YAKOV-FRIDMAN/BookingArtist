@@ -8,6 +8,6 @@ namespace BookingArtistMvcCore.Data.ModelsData
     public class PostCardView :Post
     {
         public string FullName { get; set; }
-        public byte[] ImageProfile { get; set; }
+        public string ImageProfile { get; set; }
     }
 }

@@ -11,7 +11,7 @@
 
         <div class="rudus col-2">
 
-            <img src="@String.Format("data:image/gif;base64,{0}", Model.ImageProfile)" class="rudus">
+            <img src="@Model.ImageProfile" class="rudus">
         </div>
         <div class="col-8" style="margin-left: 20px">
 
@@ -26,7 +26,16 @@
         <p class="card-text">@Model.Description</p>
         <p class="card-text"><small class="text-muted">Last updated @a.Minutes mins ago</small></p>
     </div>
-    <img src="@String.Format("data:image/gif;base64,{0}", Model.Image)" class="card-img-top" alt="...">
+    @if(Model.IsVideo){
+        <video width="100%" height="100%" src="@Model.Image" controls>
+            <source src="@Model.Image" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    }
+    else
+    {
+        <img src="@Model.Image" class="card-img-top" alt="...">
+    }
     <div class="row text-center">
         <div class="col-6">
             <p style="text-align: left; margin-left: 10px;">4502 views</p>

@@ -21,6 +21,9 @@ using BookingArtistMvcCore.Models;
 using BookingArtistMvcCore.Services;
 using BookingArtistMvcCore.ViewModels;
 using System.Text.Encodings.Web;
+using System.IO;
+using System.Text;
+using BookingArtistMvcCore.Helpers;
 
 namespace BookingArtistMvcCore.Controllers
 {
@@ -76,7 +79,7 @@ namespace BookingArtistMvcCore.Controllers
                 FullName = item.FullName,
                 Description = item.Description,
                 Price = item.Price,
-                IimagePath = Convert.ToBase64String(item.Image)
+                IimagePath = $"/home/getfile?filename={item.Image}"
 
             })).ToList();
 
@@ -88,7 +91,10 @@ namespace BookingArtistMvcCore.Controllers
 
         public IActionResult ViewArtist(int id, DateTime TiemSerch, string city)
         {
-
+            if (id == 0)
+            {
+                return null;
+            }
             var a = aartistRepository.GetCardArtitById(id);
             var artis = new ArtistExtened
             {
@@ -97,7 +103,7 @@ namespace BookingArtistMvcCore.Controllers
                 Description = a.Description,
                 FullName = a.FullName,
                 Price = a.Price,
-                IimagePath = Convert.ToBase64String(a.Image)
+                IimagePath = $"/home/getfile?filename={a.Image}"
 
             };
             ViewData["DateSerach1"] = TiemSerch;
@@ -153,13 +159,13 @@ namespace BookingArtistMvcCore.Controllers
 
 
 
-           await emailSender.SendEmailAsync(user.Email, " הזמנת אומן לאיורע בתאריך" + order.DateTimeEvent.ToString(),
-                 "<h1>הזמנה באתר booking artist</h1>" +
-                 "<hr/>" +
-                 $"<h4>עיר: {order.City}</h4>" +
-                 $"<h4>שם אומן {order.NameArtist}</h4>" +
-                 "<h4></h4>" +
-                 $"<a href='http://bookingtestsite.azurewebsites.net/home/Orders'>youer order</a>");
+            await emailSender.SendEmailAsync(user.Email, " הזמנת אומן לאיורע בתאריך" + order.DateTimeEvent.ToString(),
+                  "<h1>הזמנה באתר booking artist</h1>" +
+                  "<hr/>" +
+                  $"<h4>עיר: {order.City}</h4>" +
+                  $"<h4>שם אומן {order.NameArtist}</h4>" +
+                  "<h4></h4>" +
+                  $"<a href='http://bookingtestsite.azurewebsites.net/home/Orders'>youer order</a>");
             return RedirectToAction("Client");
         }
 
@@ -300,10 +306,11 @@ namespace BookingArtistMvcCore.Controllers
                 Description = item.Description,
                 Id = item.Id,
                 Title = item.Title,
-                Image = Convert.ToBase64String(item.Image),
-                ImageProfile = Convert.ToBase64String(profile.ImageProfile),
+                Image = $"/home/getfile?filename={item.Image}",
+                ImageProfile = $"/home/getfile?filename={profile.ImageProfile}",
                 NameProfile = profile.FullName,
-                UploadTime = item.UploadTime
+                UploadTime = item.UploadTime,
+                IsVideo = FileHelper.IsVideo(item.Image)
 
             }).ToList();
             return PartialView("_Posts", posts);
@@ -320,7 +327,7 @@ namespace BookingArtistMvcCore.Controllers
                 Description = item.Description,
                 Id = item.Id,
                 Title = item.Title,
-                Image = Convert.ToBase64String(item.Image),
+                Image = $"/home/getfile?filename=item.Image",
                 //ImageProfile = Convert.ToBase64String(profile.ImageProfile),
                 //NameProfile = profile.FullName
                 UploadTime = item.UploadTime
@@ -339,16 +346,24 @@ namespace BookingArtistMvcCore.Controllers
                 Description = item.Description,
                 Id = item.Id,
                 Title = item.Title,
-                Image = Convert.ToBase64String(item.Image),
-                ImageProfile = Convert.ToBase64String(item.ImageProfile),
+                Image = $"/home/getfile?filename={item.Image}",
+                ImageProfile = $"/home/getfile?filename={item.ImageProfile}",
                 NameProfile = item.FullName,
-                UploadTime = item.UploadTime
+                UploadTime = item.UploadTime,
+                IsVideo = FileHelper.IsVideo(item.Image)
 
 
             }).ToList();
             return PartialView("_Posts", posts);
         }
 
+        public async Task<IActionResult> GetFile(string fileName)
+        {
+           
+            var filePath = Path.Combine(@"C:\filesBoking\", fileName);
+            // ודא שהקובץ קיים וניתן לגישה
+            return PhysicalFile(filePath, FileHelper.GetMimeType(filePath), fileName);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

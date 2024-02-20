@@ -11,6 +11,8 @@ namespace BookingArtistMvcCore.Data.ModelsData
         [Key]
         public int Id { get; set; }
         public string City { get; set; }
+        public string CityEn { get; set; }
+
 
         public List<CictyWorks> CictyWorks { get; set; }
     }

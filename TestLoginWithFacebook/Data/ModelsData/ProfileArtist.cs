@@ -11,7 +11,7 @@ namespace BookingArtistMvcCore.Data.ModelsData
     {
         
         public int Id { get; set; }
-        public byte[] ImageProfile { get; set; }
+        public string ImageProfile { get; set; }
         public string About { get; set; }
         public string FullName { get; set; }
         public int IdArtit { get; set; }

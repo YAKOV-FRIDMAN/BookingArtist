@@ -4,7 +4,7 @@
 // Write your JavaScript code.
 
 window.onload = (event) => {
-    alert("on loadd");
+   
 };
 
 var PlaceHolderHereElement = $('#PlaceHolderHere');
@@ -18,10 +18,34 @@ $('button[data-toggle="ajax-model"]').click(function (event) {
     })
 })
 
-function preview() {
-    frame.src = URL.createObjectURL(event.target.files[0]);
-}
+//function preview() {
+//    frame.src = URL.createObjectURL(event.target.files[0]);
+//}
 
+function preview() {
+    var file = event.target.files[0];
+    var fileType = file['type'];
+    var validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+    var validVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+
+    if (validImageTypes.includes(fileType)) {
+        // אם זו תמונה
+        var imageFrame = document.getElementById('imageFrame');
+        imageFrame.src = URL.createObjectURL(file);
+        imageFrame.style.display = 'block';
+
+        var videoFrame = document.getElementById('videoFrame');
+        videoFrame.style.display = 'none'; // הסתר את הווידאו
+    } else if (validVideoTypes.includes(fileType)) {
+        // אם זה וידאו
+        var videoFrame = document.getElementById('videoFrame');
+        videoFrame.src = URL.createObjectURL(file);
+        videoFrame.style.display = 'block';
+
+        var imageFrame = document.getElementById('imageFrame');
+        imageFrame.style.display = 'none'; // הסתר את התמונה
+    }
+}
 
 function postPost() {
     $("#createPost").click(() => {
@@ -54,6 +78,7 @@ function postPost() {
             success: function (response) {
                 console.log('Success:', response);
                 $("#closeMoelPost").click();
+                window.location.reload();
             },
             error: function (error) {
                 console.error('Error:', error);

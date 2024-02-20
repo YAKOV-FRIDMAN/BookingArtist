@@ -8,7 +8,7 @@
 @{
 }
 <div class=" container" style=" box-shadow: -2px 3px 20px -1px #817f7f;">
-   
+
     <form asp-action="Testsub">
 
 
@@ -16,18 +16,18 @@
         <br />
 
         <div class=" row">
-            <div class="col-9 col-sm-5 form-group">
-                <label>Cictys</label>
-                <input type="text" class="form-control" id="citySearch" name="citySearch">
-                <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-            </div>
-            <div class="col-1 text-center" style="margin: auto;  margin-left: 0px">
+            <div class="col-10 col-sm-5 form-group">
+                <label>Choose the cities where you work</label>
+                <div class="row m-2 p-0 2">
 
-                <button id="addCity" class="btn btn-primary form-control">+</button>
+                    <input type="text" class="form-control col-10" id="citySearch" name="citySearch">
+                    <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+                    <button id="addCity" class="btn btn-primary form-control col-2">+</button>
+                </div>
             </div>
+        
             <div class="col-sm-6">
-                <div id="divCitysBut">
-
+                <div id="divCitysBut" class="border p-2">
                 </div>
                 <input type="hidden" asp-for="Citys" id="arryCity" />
             </div>
@@ -58,7 +58,7 @@
 
         </div>
         <hr />
-        <div class="row form-group" style="margin-left: 5px;" >
+        <div class="row form-group" style="margin-left: 5px;">
             <div class="form-group">
                 <label class="form-label">Choose your work days</label>
                 <div class="custom-control custom-switch">
@@ -82,7 +82,7 @@
                     <label class="custom-control-label" for="switch5">Thursday</label>
                 </div>
                 <div class="custom-control custom-switch">
-                    <input type="checkbox" asp-for="DaysWork.Friday"  class="custom-control-input" id="switch6">
+                    <input type="checkbox" asp-for="DaysWork.Friday" class="custom-control-input" id="switch6">
                     <label class="custom-control-label" for="switch6">Friday</label>
                 </div>
 
@@ -112,14 +112,14 @@
 
         ];
 
-      
+
 
         window.onload = function () {
-       
-                var datastring = $("#arryCity").val();
-                arryCitys = JSON.parse(datastring);
-                printBynCity();
-               // first = false;
+
+            var datastring = $("#arryCity").val();
+            arryCitys = JSON.parse(datastring);
+            printBynCity();
+            // first = false;
         };
 
         $(document).ready(function () {
@@ -127,7 +127,7 @@
                 source: function (request, response) {
                     $.ajax({
                         type: "POST",
-                        url:'@Url.Action("SearchCity")',
+                        url: '@Url.Action("SearchCity")',
                         dataType: "json",
                         data: { citySearch: request.term },
                         success: function (data) {
@@ -151,7 +151,7 @@
         $("#addCity").click(function (e) {
 
             e.preventDefault();
-           
+
             var singleValues = $("#citySearch").val();
 
             $("#citySearch").val("");
@@ -160,38 +160,41 @@
                 var re = containsObject(data, arryCitys);
                 if (re === false) {
 
-                 
 
-                        arryCitys.push(data)
-                        $("#arryCity").val(JSON.stringify(arryCitys));
-                      printBynCity();
-                        //document.getElementById('divCitysBut').innerHTML = arryCitys.map(c =>
-                        //    ` <button id="${c.id}" onclick="removCity(${c.id})" >${c.city} x</button>`
-                        //).join('')
-                        console.log(arryCitys);
+
+                    arryCitys.push(data)
+                    $("#arryCity").val(JSON.stringify(arryCitys));
+                    printBynCity();
+                    //document.getElementById('divCitysBut').innerHTML = arryCitys.map(c =>
+                    //    ` <button id="${c.id}" onclick="removCity(${c.id})" >${c.city} x</button>`
+                    //).join('')
+                    console.log(arryCitys);
                 }
 
 
 
             });
 
-           // arryCitys.push(singleValues)
+            // arryCitys.push(singleValues)
 
 
         });
 
         function printBynCity() {
             document.getElementById('divCitysBut').innerHTML = arryCitys.map(c =>
-                ` <button id="${c.Id}" onclick="removCity(${c.Id})" >${c.City} x</button>`
+                ` <button id="${c.Id}" class="btn btn-outline-info m-1" onclick="removCity(${c.Id})" >${c.City} x</button>`
             ).join('')
         }
 
         function removCity(id) {
-            var index = arryCitys.map(x => {
-                return x.Id;
-            }).indexOf(id);
+            // var index = arryCitys.map(x => {
+            //     return x.Id;
+            // }).indexOf(id);
 
-            arryCitys.splice(index, id);
+            // arryCitys.splice(index, id);
+            arryCitys = arryCitys.filter(item => item.Id !== id);
+
+            
             $("#arryCity").val(JSON.stringify(arryCitys));
 
             printBynCity();
@@ -201,25 +204,25 @@
             console.log(arryCitys);
         }
 
-        function getIdCityByNane(cictName , callBack) {
-              $.ajax({
-                        type: "POST",
-                        url:'@Url.Action("SearchCity")',
-                        dataType: "json",
-                        data: { citySearch: cictName },
-                  success: function (data) {
-                      //console.log(data);
-                      let newdata = {
-                          Id: data[0].id,
-                          City: data[0].city
-                      }
+        function getIdCityByNane(cictName, callBack) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SearchCity")',
+                dataType: "json",
+                data: { citySearch: cictName },
+                success: function (data) {
+                    //console.log(data);
+                    let newdata = {
+                        Id: data[0].id,
+                        City: data[0].city
+                    }
 
-                      console.log(newdata);
-                      callBack(newdata);
+                    console.log(newdata);
+                    callBack(newdata);
 
-                        }
+                }
 
-              })
+            })
         }
         function containsObject(obj, list) {
             var i;

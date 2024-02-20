@@ -15,6 +15,7 @@ using System.Drawing.Imaging;
 using System.Drawing;
 using BookingArtistMvcCore.ViewModels.Validations;
 using Microsoft.AspNetCore.Http;
+using BookingArtistMvcCore.Helpers;
 
 namespace BookingArtistMvcCore.Controllers
 {
@@ -43,7 +44,7 @@ namespace BookingArtistMvcCore.Controllers
                     {
                         FullName = p.FullName,
                         Description = p.About,
-                        Image = Convert.ToBase64String(p.ImageProfile)
+                        Image = $"getfile?filename={p.ImageProfile}"
                     };
                     return View(pv);
                 }
@@ -52,25 +53,13 @@ namespace BookingArtistMvcCore.Controllers
             return RedirectToAction("ArtistCard");
         }
 
-        public IActionResult SaveProfile(ViewModels.ProfileArtist profileArtist)
+        public async Task<IActionResult> SaveProfile(ViewModels.ProfileArtist profileArtist)
         {
 
             var a = aartistRepository.GetArtitByUserNmae(User.Identity.Name);
-
-
-
-            byte[] fileBytes = new byte[] { };
+            var filenName = "";
             if (profileArtist.FileImg != null)
-            {
-
-                using (var ms = new MemoryStream())
-                {
-                    profileArtist.FileImg.CopyTo(ms);
-                    fileBytes = ms.ToArray();
-                    string s = Convert.ToBase64String(fileBytes);
-                    // act on the Base64 data
-                }
-            }
+                filenName = await UploadFile(profileArtist.FileImg);
 
             var p = aartistRepository.GetProfileArtistByIdAtris(a.Id);
             if (p == null)
@@ -81,7 +70,7 @@ namespace BookingArtistMvcCore.Controllers
                     new Data.ModelsData.ProfileArtist
                     {
 
-                        ImageProfile = fileBytes.Length > 1 ? fileBytes : null,
+                        ImageProfile = filenName,
 
                         About = profileArtist.Description,
                         IdArtit = a.Id,
@@ -90,10 +79,7 @@ namespace BookingArtistMvcCore.Controllers
             }
             else
             {
-                if (fileBytes.Length > 1)
-                {
-                    p.ImageProfile = fileBytes;
-                }
+                p.ImageProfile = filenName;
                 p.About = profileArtist.Description;
                 p.FullName = profileArtist.FullName;
                 aartistRepository.EditProfileArtist(p);
@@ -266,7 +252,7 @@ namespace BookingArtistMvcCore.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
 
-        public IActionResult CreateNewPost(PostNew postNew)
+        public async Task<IActionResult> CreateNewPost(PostNew postNew)
         {
             if (ModelState.IsValid)
             {
@@ -275,27 +261,18 @@ namespace BookingArtistMvcCore.Controllers
 
                 var id = aartistRepository.GetIdArtistByIdUser(idUser);
 
-                byte[] fileBytes = new byte[] { };
-
-
-                using (var ms = new MemoryStream())
-                {
-                    postNew.ImageFile.CopyTo(ms);
-                    fileBytes = ms.ToArray();
-
-                    // act on the Base64 data
-                }
 
 
 
+                var fieleName = await UploadFile(postNew.ImageFile);
                 aartistRepository.AddPost(new Data.ModelsData.Post
                 {
 
                     idArtist = id,
                     Description = postNew.Description,
                     Title = postNew.Title,
-                   //Image = ResizeImage(fileBytes),
-                    Image = fileBytes,
+                    //Image = ResizeImage(fileBytes),
+                    Image = fieleName,
                     UploadTime = DateTime.Now
 
                 });
@@ -305,14 +282,9 @@ namespace BookingArtistMvcCore.Controllers
 
         }
 
-        //[HttpPost("UploadFile")]
-        public JsonResult UploadFile(IFormFile formFile)
-        {
 
-            return Json("ok");
-        }
 
-        public JsonResult CreateNewPostJson([FromForm]PostNew postNew)
+        public async Task<JsonResult> CreateNewPostJson([FromForm] PostNew postNew)
         {
             if (ModelState.IsValid)
             {
@@ -324,16 +296,7 @@ namespace BookingArtistMvcCore.Controllers
 
                 var id = aartistRepository.GetIdArtistByIdUser(idUser);
 
-                byte[] fileBytes = new byte[] { };
-
-
-                using (var ms = new MemoryStream())
-                {
-                    postNew.ImageFile.CopyTo(ms);
-                    fileBytes = ms.ToArray();
-
-                    // act on the Base64 data
-                }
+                var fileName = await UploadFile(postNew.ImageFile);
 
 
 
@@ -343,7 +306,7 @@ namespace BookingArtistMvcCore.Controllers
                     idArtist = id,
                     Description = postNew.Description,
                     Title = postNew.Title,
-                    Image = ResizeImage(fileBytes),
+                    Image = fileName,
                     UploadTime = DateTime.Now
 
                 });
@@ -369,10 +332,11 @@ namespace BookingArtistMvcCore.Controllers
                     Description = item.Description,
                     Id = item.Id,
                     Title = item.Title,
-                    Image = Convert.ToBase64String(item.Image),
-                    ImageProfile = Convert.ToBase64String(profile.ImageProfile),
+                    Image = $"getfile?filename={item.Image}",
+                    ImageProfile = $"getfile?filename={profile.ImageProfile}",
                     NameProfile = profile.FullName,
-                    UploadTime = item.UploadTime
+                    UploadTime = item.UploadTime,
+                    IsVideo = FileHelper.IsVideo(item.Image)    
 
                 }).ToList();
                 return View(posts);
@@ -411,6 +375,25 @@ namespace BookingArtistMvcCore.Controllers
                     return outputBytes = outputStream.ToArray();
                 }
             }
+        }
+
+        private static async Task<string> UploadFile(IFormFile file)
+        {
+            var fileName = file.FileName;
+            var filePath = Path.Combine(@"C:\filesBoking\", fileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+            return file.FileName;
+        }
+
+        public async Task<IActionResult> GetFile(string fileName)
+        {
+            var filePath = Path.Combine(@"C:\filesBoking\", fileName);
+            // ודא שהקובץ קיים וניתן לגישה
+            return PhysicalFile(filePath, FileHelper.GetMimeType(filePath), fileName);
+
         }
     }
 }

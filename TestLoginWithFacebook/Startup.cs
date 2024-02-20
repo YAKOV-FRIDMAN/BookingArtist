@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using BookingArtistMvcCore.Data;
 using BookingArtistMvcCore.Services;
 using BookingArtistMvcCore.ViewModels.Validations;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace BookingArtistMvcCore
 {
@@ -87,6 +88,15 @@ namespace BookingArtistMvcCore
                 //// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 //app.UseHsts();
             }
+
+            app.Use(async (context, next) =>
+            {
+                context.Features.Get<IHttpMaxRequestBodySizeFeature>().MaxRequestBodySize = null; // אין הגבלה
+                                                                                                  // או להגדיר גודל מסוים בבתים
+                                                                                                  // context.Features.Get<IHttpMaxRequestBodySizeFeature>().MaxRequestBodySize = 10 * 1024 * 1024; // לדוגמה, 10MB
+                await next.Invoke();
+            });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

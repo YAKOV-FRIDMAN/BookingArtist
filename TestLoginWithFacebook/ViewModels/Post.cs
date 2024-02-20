@@ -14,7 +14,8 @@ namespace BookingArtistMvcCore.ViewModels
         public string NameProfile { get; set; }
         public int Likes { get; set; }
         public int Views { get; set; }
+        public bool IsVideo { get; set; }
 
 
-     }
+    }
 }

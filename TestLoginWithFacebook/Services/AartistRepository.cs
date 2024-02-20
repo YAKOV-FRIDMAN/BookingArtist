@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BookingArtistMvcCore.Data;
 using BookingArtistMvcCore.Data.ModelsData;
 using static BookingArtistMvcCore.Data.ModelsData.Enums;
+using System.IO;
 
 namespace BookingArtistMvcCore.Services
 {
@@ -286,6 +287,7 @@ namespace BookingArtistMvcCore.Services
         public void DeletePost(int id, int idArtist)
         {
             var p = GetPostById(id, idArtist);
+            File.Delete(@$"C:\filesBoking\{p.Image}");
             applicationDbContext.Posts.Remove(p);
             applicationDbContext.SaveChanges();
         }
